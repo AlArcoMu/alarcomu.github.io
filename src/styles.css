@@ -165,7 +165,6 @@ ul, ol { margin: 0; padding: 0; }
   padding-bottom: 0.32em;
 }
 .hero-name .line { display: block; }
-.hero-name .line-2 { padding-left: 1.15em; }
 .hero-name .scribble {
   position: absolute; left: 0; bottom: 0; width: min(100%, 11em); height: 0.32em;
   color: var(--ink); overflow: visible;
@@ -190,7 +189,7 @@ ul, ol { margin: 0; padding: 0; }
 .hero-meta .ok svg { color: var(--magenta); }
 .hero-meta a { color: var(--graphite); }
 
-.portrait { position: relative; justify-self: center; width: min(100%, 22rem); aspect-ratio: 1; }
+.portrait { position: relative; justify-self: center; align-self: start; margin-top: 1.5rem; width: min(100%, 22rem); aspect-ratio: 1; }
 .portrait picture, .portrait img { width: 100%; height: 100%; }
 .portrait img { border-radius: 50%; object-fit: cover; background: var(--ink-soft); box-shadow: 0 0 0 1px var(--rule), 0 0 60px rgb(46 139 255 / .18); }
 .portrait .ring {
@@ -202,7 +201,6 @@ ul, ol { margin: 0; padding: 0; }
 @media (max-width: 52rem) {
   .hero { grid-template-columns: 1fr; padding-top: 2.5rem; }
   .portrait { order: -1; justify-self: start; width: 8.5rem; margin-left: 0.5rem; }
-  .hero-name .line-2 { padding-left: 0.6em; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
