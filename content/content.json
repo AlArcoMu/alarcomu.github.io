@@ -1,0 +1,244 @@
+{
+  "settings": {
+    "siteUrl": "https://alarcomu.github.io",
+    "lang": "es",
+    "locale": "es_ES",
+    "title": "Alberto Arcones Muñoz | Técnico de Implantación de Software",
+    "description": "Alberto Arcones Muñoz, técnico de implantación de software en Toledo: implantación de aplicaciones, soporte técnico, análisis de incidencias y SQL/PL-SQL.",
+    "keywords": [
+      "técnico de implantación de software",
+      "soporte técnico",
+      "SQL",
+      "PL/SQL",
+      "IBM DB2",
+      "sistemas de gestión de almacén",
+      "Toledo",
+      "Madrid",
+      "Alberto Arcones Muñoz"
+    ],
+    "order": [
+      "estudios",
+      "experiencia",
+      "proyectos"
+    ],
+    "ogImage": "img/og.jpg",
+    "customDomain": "",
+    "projectsNote": ""
+  },
+  "profile": {
+    "name": "Alberto Arcones Muñoz",
+    "givenName": "Alberto",
+    "familyName": "Arcones Muñoz",
+    "nameLine1": "Alberto Arcones",
+    "nameLine2": "Muñoz",
+    "handle": "alarcomu",
+    "role": "Técnico de Implantación de Software",
+    "summary": "Implanto y configuro aplicaciones en centros logísticos, encuentro los errores de sus módulos antes que el usuario y acompaño cada incidencia hasta que queda resuelta. Más de un año en el proyecto de Inditex para T-Systems.",
+    "location": "Borox, Toledo",
+    "region": "Castilla-La Mancha",
+    "country": "ES",
+    "photo": "img/alberto.webp",
+    "photoFallback": "img/alberto.jpg",
+    "photoAlt": "Retrato de Alberto Arcones Muñoz",
+    "email": "arconescaballero74@gmail.com",
+    "phone": "",
+    "linkedin": "https://www.linkedin.com/in/albertoarcones/",
+    "github": "https://github.com/alarcomu",
+    "cv": "cv/Alberto-Arcones-Munoz-CV.pdf",
+    "available": true,
+    "availabilityText": "Disponible para incorporación inmediata, jornada completa",
+    "skills": [
+      "Implantación y configuración de software",
+      "Soporte técnico",
+      "Análisis y diagnóstico de errores",
+      "SQL y PL/SQL",
+      "IBM DB2",
+      "Análisis de logs con Grafana y Loki",
+      "Jira y Remedy",
+      "Atención al cliente"
+    ],
+    "languages": [
+      {
+        "name": "Español",
+        "level": "Nativo"
+      },
+      {
+        "name": "Inglés",
+        "level": ""
+      }
+    ],
+    "contactText": "¿Buscas a alguien para implantación, soporte técnico o desarrollo? Escríbeme y hablamos."
+  },
+  "education": [
+    {
+      "id": "dam-azarquiel",
+      "title": "FP de Grado Superior en Desarrollo de Aplicaciones Multiplataforma",
+      "school": "IES Azarquiel",
+      "location": "Toledo",
+      "start": "2022-09",
+      "end": "2024-06",
+      "description": "Programación en Java, bases de datos con MySQL y PL/SQL, desarrollo web con HTML5, CSS3, JavaScript y Bootstrap, control de versiones con Git y administración de sistemas Windows y Linux.",
+      "tags": [
+        "Java",
+        "MySQL",
+        "PL/SQL",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "Git",
+        "Linux"
+      ]
+    },
+    {
+      "id": "talento-digital-ciber",
+      "title": "Programa Talento Digital: Ciberseguridad y CyberOps Associate",
+      "school": "EOI y Cisco",
+      "location": "",
+      "start": "",
+      "end": "",
+      "description": "Seguridad informática, ingeniería social, amenazas y ataques, vulnerabilidades y mecanismos de defensa, seguridad en redes inalámbricas y controles de ciberseguridad en la empresa.",
+      "tags": [
+        "Ciberseguridad",
+        "CyberOps",
+        "Redes"
+      ]
+    },
+    {
+      "id": "powerbi-openwebinars",
+      "title": "Especialista en Power BI",
+      "school": "OpenWebinars",
+      "location": "",
+      "start": "",
+      "end": "",
+      "description": "Análisis e interpretación de datos y toma de decisiones a partir de ellos con Power BI.",
+      "tags": [
+        "Power BI",
+        "Análisis de datos"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "id": "tsystems-implantacion",
+      "role": "Técnico de Implantación de Software",
+      "company": "T-Systems",
+      "client": "Proyecto Inditex, centro logístico de Lefties",
+      "location": "Toledo",
+      "start": "2025-05",
+      "end": "2026-09",
+      "highlights": [
+        "Implantación, configuración y mantenimiento de las aplicaciones de gestión de almacén del centro logístico.",
+        "Detección y diagnóstico de errores en los módulos analizando logs, trazas y comunicaciones entre sistemas.",
+        "Soporte a usuarios y resolución de incidencias, con seguimiento de tickets en Jira y Remedy.",
+        "Consultas SQL y PL/SQL sobre IBM DB2 para comprobar y analizar datos de operación.",
+        "Herramientas internas para mejorar procesos, como paneles operativos y flujos automatizados en Retool.",
+        "Coordinación con equipos de desarrollo y documentación de incidencias con medidas correctivas y preventivas."
+      ],
+      "tags": [
+        "Implantación",
+        "Soporte técnico",
+        "SQL",
+        "PL/SQL",
+        "IBM DB2",
+        "Grafana",
+        "Jira",
+        "Remedy",
+        "Retool"
+      ]
+    },
+    {
+      "id": "kanzan-practicas",
+      "role": "Desarrollador de Aplicaciones Multiplataforma (prácticas)",
+      "company": "Kanzan Tech",
+      "client": "",
+      "location": "En remoto",
+      "start": "2024-04",
+      "end": "2024-06",
+      "highlights": [
+        "Desarrollo de un sistema de seguimiento de autobuses con la plataforma low-code OutSystems."
+      ],
+      "tags": [
+        "OutSystems",
+        "Low-code"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "ecommerce-microservices",
+      "title": "E-commerce con microservicios",
+      "year": "2026",
+      "context": "Proyecto personal",
+      "summary": "Tienda online dividida en servicios independientes de usuarios, catálogo y pedidos, cada uno con su propia base de datos, detrás de un gateway Nginx.",
+      "details": "Autenticación con JWT, caché del catálogo en Redis y entorno completo levantado con docker-compose. Integración continua con GitHub Actions y desarrollo por ramas y pull requests.",
+      "image": "",
+      "imageAlt": "",
+      "tags": [
+        "FastAPI",
+        "Python",
+        "Docker",
+        "Nginx",
+        "PostgreSQL",
+        "Redis",
+        "GitHub Actions"
+      ],
+      "repo": "https://github.com/alarcomu/ecommerce-microservices",
+      "demo": ""
+    },
+    {
+      "id": "logql-builder",
+      "title": "Generador de consultas LogQL",
+      "year": "2026",
+      "context": "Herramienta interna",
+      "summary": "App de escritorio para construir consultas de Grafana Loki sin memorizar la sintaxis: escribes lo que buscas en lenguaje natural y la app genera la consulta.",
+      "details": "Detección de módulos, niveles de log, rangos de tiempo e identificadores sin usar IA. Favoritos, historial, validación en tiempo real, modo oscuro y atajos de teclado. Empaquetada como ejecutable con Electron.",
+      "image": "",
+      "imageAlt": "",
+      "tags": [
+        "React",
+        "Vite",
+        "Electron",
+        "Grafana Loki",
+        "LogQL"
+      ],
+      "repo": "",
+      "demo": ""
+    },
+    {
+      "id": "silo-3d",
+      "title": "Mapa 3D de un silo de palés",
+      "year": "2026",
+      "context": "Herramienta interna",
+      "summary": "Vista 3D de un silo automático de ocho pasillos con doble fondo, donde cada posición se colorea según esté ocupada, libre, deshabilitada o con error.",
+      "details": "Un workflow sincroniza una instantánea completa del silo desde IBM DB2 a una base PostgreSQL, y el mapa la pinta para localizar errores de un vistazo.",
+      "image": "",
+      "imageAlt": "",
+      "tags": [
+        "Retool",
+        "IBM DB2",
+        "PostgreSQL",
+        "SQL",
+        "Visualización 3D"
+      ],
+      "repo": "",
+      "demo": ""
+    },
+    {
+      "id": "bus-tracking",
+      "title": "Seguimiento de autobuses",
+      "year": "2024",
+      "context": "Prácticas en Kanzan Tech",
+      "summary": "Aplicación multiplataforma para seguir los autobuses de una flota, desarrollada durante las prácticas del ciclo de DAM.",
+      "details": "Construida con la plataforma low-code OutSystems.",
+      "image": "",
+      "imageAlt": "",
+      "tags": [
+        "OutSystems",
+        "Low-code",
+        "Multiplataforma"
+      ],
+      "repo": "",
+      "demo": ""
+    }
+  ]
+}

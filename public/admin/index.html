@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' blob: data:; connect-src https://api.github.com; base-uri 'none'; form-action 'none'">
+  <title>Admin | alarcomu</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main id="login" class="login" hidden>
+    <form id="login-form" class="login-card" novalidate>
+      <a class="brand" href="../"><svg class="brand-mark" viewBox="0 0 40 24" aria-hidden="true" focusable="false"><path d="M3 15c4-9 7-9 10 0s6 9 10 0 7-9 10 0 3 5 4 3" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>alarcomu <span class="brand-sub">admin</span></a>
+      <h1>Conecta con tu repositorio</h1>
+      <p class="muted">Los cambios se guardan como un commit en GitHub y la web se vuelve a publicar sola en uno o dos minutos.</p>
+
+      <div class="grid-2">
+        <label class="field"><span>Usuario de GitHub</span><input name="owner" required autocomplete="username" value="alarcomu"></label>
+        <label class="field"><span>Rama</span><input name="branch" required value="main"></label>
+      </div>
+      <label class="field"><span>Repositorio</span><input name="repo" required value="alarcomu.github.io"></label>
+      <label class="field">
+        <span>Token de acceso (fine-grained)</span>
+        <input name="token" type="password" required autocomplete="current-password" spellcheck="false" placeholder="github_pat_…">
+        <small>Crea uno en GitHub → Settings → Developer settings → Fine-grained tokens, solo para este repositorio y con permiso <b>Contents: Read and write</b>.</small>
+      </label>
+      <label class="check"><input type="checkbox" name="remember"> Recordar el token en este navegador</label>
+      <p class="form-error" id="login-error" role="alert" hidden></p>
+      <button class="btn btn-primary btn-block" type="submit" id="login-btn">Conectar</button>
+    </form>
+  </main>
+
+  <div id="app" class="app" hidden>
+    <header class="topbar">
+      <a class="brand" href="../" target="_blank" rel="noopener"><svg class="brand-mark" viewBox="0 0 40 24" aria-hidden="true" focusable="false"><path d="M3 15c4-9 7-9 10 0s6 9 10 0 7-9 10 0 3 5 4 3" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>alarcomu <span class="brand-sub">admin</span></a>
+      <p class="status" id="status" aria-live="polite"></p>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost" type="button" id="discard-btn" hidden>Descartar cambios</button>
+        <button class="btn btn-primary" type="button" id="publish-btn" disabled>Publicar cambios</button>
+        <button class="btn btn-quiet" type="button" id="logout-btn">Salir</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="tabs" aria-label="Secciones" role="tablist">
+        <button role="tab" type="button" data-tab="projects" aria-selected="true">Proyectos</button>
+        <button role="tab" type="button" data-tab="experience">Experiencia</button>
+        <button role="tab" type="button" data-tab="education">Estudios</button>
+        <button role="tab" type="button" data-tab="profile">Perfil</button>
+        <button role="tab" type="button" data-tab="settings">Ajustes y SEO</button>
+      </nav>
+      <main class="panel" id="panel" role="tabpanel" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <dialog id="editor" class="dialog" aria-labelledby="editor-title">
+    <form method="dialog" id="editor-form" novalidate>
+      <header class="dialog-head">
+        <h2 id="editor-title">Editar</h2>
+        <button class="icon-btn" type="button" data-close aria-label="Cerrar">✕</button>
+      </header>
+      <div class="dialog-body" id="editor-body"></div>
+      <footer class="dialog-foot">
+        <button class="btn btn-ghost" type="button" data-close>Cancelar</button>
+        <button class="btn btn-primary" type="submit" id="editor-save">Guardar</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="publish" class="dialog dialog-sm" aria-labelledby="publish-title">
+    <form method="dialog" id="publish-form">
+      <header class="dialog-head">
+        <h2 id="publish-title">Publicar cambios</h2>
+        <button class="icon-btn" type="button" data-close aria-label="Cerrar">✕</button>
+      </header>
+      <div class="dialog-body">
+        <p class="muted">Se creará un único commit con estos cambios:</p>
+        <ul class="change-list" id="change-list"></ul>
+        <label class="field"><span>Descripción del cambio</span><input name="message" required maxlength="120"></label>
+        <p class="form-error" id="publish-error" role="alert" hidden></p>
+      </div>
+      <footer class="dialog-foot">
+        <button class="btn btn-ghost" type="button" data-close>Cancelar</button>
+        <button class="btn btn-primary" type="submit" id="publish-confirm">Publicar</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+  <script src="admin.js" type="module"></script>
+</body>
+</html>

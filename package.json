@@ -1,0 +1,13 @@
+{
+  "name": "alarcomu.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio personal de Alberto Arcones Muñoz con panel de administración sobre GitHub Pages",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs"
+  }
+}
