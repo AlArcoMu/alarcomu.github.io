@@ -1,4 +1,3 @@
-
 import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,7 +15,7 @@ const projects = data.projects || [];
 const esc = (v = "") =>
   String(v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const siteUrl = new URL(S.siteUrl.endsWith("/") ? S.siteUrl : S.siteUrl + "/");
-const BASE = siteUrl.pathname; 
+const BASE = siteUrl.pathname;
 const SITE = siteUrl.href;
 const isAbs = (u) => /^(https?:)?\/\//.test(u) || u.startsWith("mailto:") || u.startsWith("tel:");
 const asset = (u) => (!u ? "" : isAbs(u) ? u : BASE + u.replace(/^\/+/, ""));
@@ -47,7 +46,7 @@ const duration = (start, end) => {
   const now = new Date();
   const b = parseYM(end) || { y: now.getFullYear(), m: now.getMonth() + 1 };
   if (!b.m) return "";
-  const total = (b.y - a.y) * 12 + (b.m - a.m) + 1; // meses inclusivos
+  const total = (b.y - a.y) * 12 + (b.m - a.m) + 1;
   if (total <= 0) return "";
   const y = Math.floor(total / 12), m = total % 12;
   const parts = [];
@@ -72,7 +71,6 @@ const smooth = (pts, closed = false) => {
   }
   return d;
 };
-
 const wave = (seed, { w = 600, h = 24, waves = 9, amp = 6 } = {}) => {
   const rand = rng(seed);
   const pts = [];
@@ -85,7 +83,6 @@ const wave = (seed, { w = 600, h = 24, waves = 9, amp = 6 } = {}) => {
   }
   return smooth(pts);
 };
-
 const ring = (seed, start = -105, sweep = 395, base = 92) => {
   const rand = rng(seed);
   const pts = [];
@@ -105,12 +102,10 @@ const I = {
   mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>',
   pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></svg>',
   check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
-  sun: '<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
-  moon: '<svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
   arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>',
 };
-const logoMark = `<svg viewBox="0 0 40 24" aria-hidden="true" focusable="false"><path d="${wave("logo", { w: 40, h: 24, waves: 3, amp: 6 })}" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>`;
+const logoMark = read("public/logo.svg").replace("<svg ", '<svg aria-hidden="true" focusable="false" ');
 
 const tags = (list = []) =>
   list.length ? `<ul class="tags" aria-label="Tecnologías">${list.map((t) => `<li class="tag">${esc(t)}</li>`).join("")}</ul>` : "";

@@ -1,4 +1,3 @@
-
 const CONTENT_PATH = "content/content.json";
 const API = "https://api.github.com";
 const store = {
