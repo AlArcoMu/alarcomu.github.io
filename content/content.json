@@ -201,7 +201,7 @@
       "context": "Proyecto personal",
       "summary": "Tienda online dividida en servicios independientes de usuarios, catálogo y pedidos, cada uno con su propia base de datos, detrás de un gateway Nginx.",
       "details": "Autenticación con JWT, caché del catálogo en Redis y entorno completo levantado con docker-compose. Integración continua con GitHub Actions y desarrollo por ramas y pull requests.",
-      "image": "uploads/e-commerce-con-microservicios-mvpil45j.webp",
+      "image": "uploads/e-commerce-con-microservicios-mvpjsxo0.webp",
       "imageAlt": "E-commerce",
       "tags": [
         "FastAPI",
