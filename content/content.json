@@ -270,5 +270,35 @@
       "repo": "",
       "demo": ""
     }
+  ],
+  "hobbies": [
+    {
+      "id": "musica-xs6t",
+      "title": "Música",
+      "text": "Toco el trombón en la banda de música de Borox. Ensayos, conciertos, procesiones y fiestas del pueblo: llevo años compartiendo atril con mis vecinos.",
+      "image": "uploads/musica-mvqw5db8.webp",
+      "imageAlt": "Alberto tocando el trombón con la banda de música de Borox durante un concierto"
+    },
+    {
+      "id": "tiempo-con-amigos-cde8",
+      "title": "Tiempo con amigos",
+      "text": "Lo que más disfruto es el tiempo con mis amigos: quedadas, cenas, fiestas del pueblo o una tarde cualquiera. Es lo que me recarga las pilas.",
+      "image": "uploads/tiempo-con-amigos-mvqwbo8i.webp",
+      "imageAlt": "Alberto con sus amigos durante una ruta por el campo"
+    },
+    {
+      "id": "cocina-3ujq",
+      "title": "Cocina",
+      "text": "Me gusta tanto cocinar como comer bien. Paso muchos ratos en la cocina probando recetas nuevas y siempre tengo apuntado algún sitio al que ir a comer.",
+      "image": "uploads/cocina-mvqw3rxy.webp",
+      "imageAlt": "Paella de arroz negro"
+    },
+    {
+      "id": "viajar-asfd",
+      "title": "Viajar",
+      "text": "Me gusta viajar y conocer sitios nuevos, desde escapadas de fin de semana hasta la costa. Siempre vuelvo con ganas de preparar el siguiente.",
+      "image": "uploads/viajar-mvqwahuf.webp",
+      "imageAlt": "Playa de Salou"
+    }
   ]
 }
