@@ -260,8 +260,8 @@
       "context": "Prácticas en Kanzan Tech",
       "summary": "Aplicación multiplataforma para seguir los autobuses de una flota, desarrollada durante las prácticas del ciclo de DAM.",
       "details": "Construida con la plataforma low-code OutSystems.",
-      "image": "",
-      "imageAlt": "",
+      "image": "uploads/seguimiento-de-autobuses-mvqi2guv.webp",
+      "imageAlt": "App de seguimiento de autobuses en tres móviles: listado de trayectos con buscador, mapa con la posición del autobús en tiempo real y pantalla del conductor para compartir su ubicación",
       "tags": [
         "OutSystems",
         "Low-code",
