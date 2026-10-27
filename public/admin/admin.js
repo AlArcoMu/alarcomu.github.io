@@ -171,7 +171,7 @@ const referencedFiles = () => {
   return [...S.files.entries()].filter(([, f]) => json.includes(`"${f.parent || f.sitePath}"`));
 };
 const isDirty = () => !!S.data && (JSON.stringify(S.data) !== S.originalNorm || referencedFiles().length > 0);
-const LABELS = { settings: "Ajustes y SEO", profile: "Perfil", experience: "Experiencia", education: "Estudios", projects: "Proyectos" };
+const LABELS = { settings: "Ajustes y SEO", profile: "Perfil", experience: "Experiencia", education: "Estudios", projects: "Proyectos", hobbies: "Aficiones" };
 function changedSections() {
   const orig = JSON.parse(S.original);
   return Object.keys(LABELS).filter((k) => JSON.stringify(S.data[k]) !== JSON.stringify(orig[k]));
@@ -238,6 +238,7 @@ const IMAGE_KINDS = {
   project: { w: 1600, h: 1000, small: 800, dir: "uploads", round: false, hint: "Se recorta a 16:10 y se optimiza a WebP." },
   photo: { w: 800, h: 800, small: 400, dir: "img", round: true, hint: "Se recorta en cuadrado y se optimiza a WebP." },
   og: { w: 1200, h: 630, dir: "img", round: false, type: "image/jpeg", hint: "Imagen al compartir en redes: 1200 × 630, JPG." },
+  hobby: { w: 1200, h: 900, small: 600, dir: "uploads", round: false, hint: "Se recorta a 4:3 y se optimiza a WebP." },
 };
 
 function counterFor(input, [min, max]) {
@@ -368,16 +369,21 @@ function pdfField(def, obj, set, label, hint) {
 }
 
 function orderField(def, obj, set) {
-  const names = { estudios: "Estudios", experiencia: "Experiencia laboral", proyectos: "Proyectos" };
+  const names = { estudios: "Estudios", experiencia: "Experiencia laboral", proyectos: "Proyectos", aficiones: "Aficiones" };
   const list = h("ol", { class: "order-list" });
+  const current = () => {
+    const arr = [...(obj[def.key] || ["estudios", "experiencia", "proyectos"])];
+    Object.keys(names).forEach((k) => { if (!arr.includes(k)) arr.push(k); });
+    return arr;
+  };
   const paint = () => {
-    const arr = obj[def.key] || ["estudios", "experiencia", "proyectos"];
+    const arr = current();
     list.replaceChildren(...arr.map((k, i) => h("li", {}, h("span", {}, `${i + 1}. ${names[k] || k}`),
       h("span", { class: "btns" },
         h("button", { type: "button", class: "icon-btn", "aria-label": `Subir ${names[k]}`, disabled: i === 0, onclick: () => move(i, -1), text: "↑" }),
         h("button", { type: "button", class: "icon-btn", "aria-label": `Bajar ${names[k]}`, disabled: i === arr.length - 1, onclick: () => move(i, 1), text: "↓" })))));
   };
-  const move = (i, d) => { const arr = [...(obj[def.key] || ["estudios", "experiencia", "proyectos"])]; [arr[i], arr[i + d]] = [arr[i + d], arr[i]]; set(arr); paint(); };
+  const move = (i, d) => { const arr = current(); [arr[i], arr[i + d]] = [arr[i + d], arr[i]]; set(arr); paint(); };
   paint();
   return h("div", { class: "field" }, h("span", {}, def.label), list, h("small", {}, "Contacto aparece siempre al final."));
 }
@@ -426,6 +432,18 @@ const SCHEMAS = {
     blank: () => ({ id: "", title: "", school: "", location: "", start: "", end: "", description: "", tags: [] }),
     row: (e) => ({ title: e.title, sub: [e.school, range(e.start, e.end)].filter(Boolean).join(" · ") }),
   },
+  hobbies: {
+    title: "Aficiones", singular: "afición", add: "Añadir afición",
+    intro: "Lo que haces en tu tiempo libre. En la web las fotos se apilan una sobre otra al hacer scroll, en este orden.",
+    fields: [
+      { key: "title", label: "Título", required: true, maxlength: 60, placeholder: "Senderismo" },
+      { key: "text", label: "Texto", type: "textarea", rows: 3, seo: [60, 220], hint: "Una o dos frases sobre qué haces y por qué te gusta." },
+      { key: "image", label: "Foto", type: "image", kind: "hobby", required: true },
+      { key: "imageAlt", label: "Texto alternativo de la foto", hint: "Describe lo que se ve en la foto." },
+    ],
+    blank: () => ({ id: "", title: "", text: "", image: "", imageAlt: "" }),
+    row: (x) => ({ title: x.title, sub: x.text || "", thumb: x.image ? imgSrc(x.image) : initials(x.title) }),
+  },
 };
 
 const PROFILE_GROUPS = [
@@ -465,6 +483,8 @@ const SETTINGS_GROUPS = [
   { title: "Estructura", fields: [
     { key: "order", label: "Orden de las secciones", type: "order" },
     { key: "projectsNote", label: "Nota junto al título de Proyectos", placeholder: "Opcional" },
+    { key: "hobbiesTitle", label: "Título de la sección de aficiones", placeholder: "Fuera del trabajo" },
+    { key: "hobbiesIntro", label: "Introducción de la sección de aficiones", type: "textarea", rows: 2, placeholder: "Opcional" },
   ] },
   { title: "Dominio", fields: [
     { key: "siteUrl", label: "URL de la web", type: "url", required: true, hint: "Se usa para la URL canónica, el sitemap y las imágenes al compartir." },
@@ -501,7 +521,7 @@ function renderList(panel, key) {
   const list = h("ul", { class: "items" });
   arr.forEach((it, i) => {
     const r = sc.row(it);
-    const thumb = key === "projects"
+    const thumb = key === "projects" || key === "hobbies"
       ? h("div", { class: "item-thumb" }, r.thumb && r.thumb.length > 3 ? h("img", { src: r.thumb, alt: "" }) : r.thumb)
       : null;
     list.append(h("li", { class: "item" + (thumb ? " with-thumb" : "") },
@@ -581,6 +601,8 @@ $("#editor-form").addEventListener("submit", (e) => {
   const alt = form.querySelector('[name="imageAlt"]');
   if (alt) alt.setCustomValidity(item.image && !item.imageAlt?.trim() ? "Describe la imagen en una frase." : "");
   if (!form.checkValidity()) return form.reportValidity();
+  const missingImage = SCHEMAS[key].fields.flat().find((f) => f.type === "image" && f.required && !item[f.key]);
+  if (missingImage) return toast(`Añade una ${missingImage.label.toLowerCase()} antes de guardar.`);
   if (item.start && item.end && item.end < item.start) {
     const end = form.querySelector('[name="end"]');
     end.setCustomValidity("La fecha de fin no puede ser anterior a la de inicio.");

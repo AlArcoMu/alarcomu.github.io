@@ -11,6 +11,7 @@ const { settings: S, profile: P } = data;
 const education = data.education || [];
 const experience = data.experience || [];
 const projects = data.projects || [];
+const hobbies = (data.hobbies || []).filter((h) => h.image);
 
 const esc = (v = "") =>
   String(v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -195,10 +196,35 @@ const sections = {
           ${items ? `<ul class="projects">${items}
           </ul>` : ""}`, band);
   },
+  aficiones: (band) => {
+    const tilt = [-4, 3, -2, 5, -3, 2, -5, 4];
+    const items = hobbies.map((h, i) => `
+            <li class="pile-item" style="--rot:${tilt[i % tilt.length]}deg">
+              <figure>
+                <div class="polaroid">
+                  ${picture(h.image, { alt: h.imageAlt || h.title, sizes: "(max-width: 52rem) 85vw, 30rem" })}
+                  <figcaption class="polaroid-title">${esc(h.title)}</figcaption>
+                </div>
+                ${h.text ? `<p class="pile-text">${esc(h.text)}</p>` : ""}
+              </figure>
+            </li>`).join("");
+    return section("aficiones", S.hobbiesTitle || "Fuera del trabajo", `${S.hobbiesIntro ? `
+          <p class="lead">${esc(S.hobbiesIntro)}</p>` : ""}
+          <div class="pile" style="--count:${hobbies.length}">
+            <div class="pile-stage">
+              <ol class="pile-list">${items}
+              </ol>
+            </div>
+          </div>`, band);
+  },
 };
 
-const order = (S.order || ["estudios", "experiencia", "proyectos"]).filter((k) => sections[k]);
-const navLabels = { estudios: "Estudios", experiencia: "Experiencia", proyectos: "Proyectos" };
+const order = [...(S.order || ["estudios", "experiencia", "proyectos"])];
+if (!order.includes("aficiones")) order.push("aficiones");
+const visible = order.filter((k) => sections[k] && (k !== "aficiones" || hobbies.length));
+order.length = 0;
+order.push(...visible);
+const navLabels = { estudios: "Estudios", experiencia: "Experiencia", proyectos: "Proyectos", aficiones: "Aficiones" };
 const navItems = (pre = "") => [...order.map((k) => [k, navLabels[k]]), ["contacto", "Contacto"]]
   .map(([k, l]) => `<li><a href="${pre}#${k}">${l}</a></li>`).join("\n          ");
 

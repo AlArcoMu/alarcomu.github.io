@@ -245,6 +245,35 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .project .actions { margin-top: 0.6rem; }
 @media (max-width: 46rem) { .projects { grid-template-columns: 1fr; } }
 
+.pile-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 3rem 2.5rem; }
+.pile-item figure { margin: 0; display: grid; gap: 1rem; }
+.pile-item .polaroid { transform: rotate(var(--rot)); }
+.polaroid { background: var(--text); padding: 3.5% 3.5% 0; box-shadow: 0 18px 40px rgb(0 0 0 / 0.45); }
+.polaroid img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; background: #222; }
+.polaroid-title { color: var(--on-accent); font-weight: 700; font-size: var(--fs-sub); letter-spacing: -0.015em; line-height: 1.1; padding: 0.9rem 0.2rem 1.1rem; }
+.pile-text { color: var(--muted); max-width: 32rem; }
+
+.pile.is-live { position: relative; height: calc(var(--count) * 70vh + 45vh); overflow: clip; }
+.is-live .pile-stage {
+  position: sticky; top: 5.5rem; height: calc(100vh - 7rem);
+  display: grid; align-items: start; justify-items: center; padding-top: 1rem;
+}
+.is-live .pile-list { display: block; position: relative; width: min(100%, 30rem); aspect-ratio: 4 / 3.75; }
+.is-live .pile-item { position: absolute; inset: 0; transform: translate3d(0, var(--y, 0), 0) rotate(var(--tilt, var(--rot))); will-change: transform; }
+.is-live .pile-item figure { display: block; }
+.is-live .pile-item .polaroid { transform: none; transition: filter .35s ease; }
+.is-live .pile-item.is-under .polaroid { filter: brightness(0.55) saturate(0.6); }
+.is-live .pile-text {
+  position: absolute; left: 0; right: 0; top: calc(100% + 1.75rem);
+  transform: rotate(calc(var(--tilt, var(--rot)) * -1)); text-align: center; margin-inline: auto;
+  opacity: 0; transition: opacity .3s ease;
+}
+.is-live .pile-item.is-active .pile-text { opacity: 1; }
+@media (max-width: 52rem) {
+  .is-live .pile-list { width: min(100%, 22rem); }
+  .pile.is-live { height: calc(var(--count) * 60vh + 40vh); }
+}
+
 .lead { font-size: var(--fs-sub); max-width: 34rem; line-height: 1.4; }
 .contact-mail {
   justify-self: start;
@@ -283,5 +312,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   body { background: #fff; color: #000; }
   .site-header, .actions, .hero-meta a { display: none; }
   .band, .hero, .featured { background: none; color: #000; }
+  .pile.is-live { height: auto; }
   .section-title { position: static; }
 }

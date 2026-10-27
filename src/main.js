@@ -32,4 +32,42 @@
     navMap.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
 
+  const pile = document.querySelector(".pile");
+  if (pile && "IntersectionObserver" in window && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+    const items = [...pile.querySelectorAll(".pile-item")];
+    const stage = pile.querySelector(".pile-stage");
+    if (items.length > 1) {
+      pile.classList.add("is-live");
+      let frame = 0;
+      const update = () => {
+        frame = 0;
+        const rect = pile.getBoundingClientRect();
+        const travel = rect.height - stage.offsetHeight;
+        const progress = Math.min(1, Math.max(0, -rect.top / travel));
+        const position = progress * (items.length - 1) * 1.08;
+        let active = 0;
+        const states = items.map((_, i) => {
+          const t = i === 0 ? 1 : Math.min(1, Math.max(0, position - (i - 1)));
+          if (t >= 0.5) active = i;
+          return 1 - Math.pow(1 - t, 3);
+        });
+        items.forEach((el, i) => {
+          const e = states[i];
+          const rot = parseFloat(el.style.getPropertyValue("--rot")) || 0;
+          el.style.setProperty("--y", `${((1 - e) * 105).toFixed(2)}vh`);
+          el.style.setProperty("--tilt", `${(rot * (1 + (1 - e) * 2.5)).toFixed(2)}deg`);
+          el.classList.toggle("is-active", i === active);
+          el.classList.toggle("is-under", i < active);
+        });
+      };
+      const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) { window.addEventListener("scroll", schedule, { passive: true }); schedule(); }
+        else window.removeEventListener("scroll", schedule);
+      }).observe(pile);
+      window.addEventListener("resize", schedule, { passive: true });
+      schedule();
+    }
+  }
+
 })();
