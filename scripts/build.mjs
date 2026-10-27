@@ -57,212 +57,198 @@ const duration = (start, end) => {
 const now = new Date();
 const updatedLabel = `${MONTHS_LONG[now.getMonth()]} de ${now.getFullYear()}`;
 
-const hash = (str) => { let h = 2166136261; for (const c of String(str)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
-const rng = (seed) => { let a = hash(seed); return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
-const r1 = (n) => Math.round(n * 10) / 10;
-const smooth = (pts, closed = false) => {
-  const p = closed ? [pts[pts.length - 1], ...pts, pts[0], pts[1]] : [pts[0], ...pts, pts[pts.length - 1]];
-  let d = `M${r1(p[1][0])} ${r1(p[1][1])}`;
-  for (let i = 1; i < p.length - 2; i++) {
-    const [p0, p1, p2, p3] = [p[i - 1], p[i], p[i + 1], p[i + 2]];
-    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
-    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
-    d += ` C${r1(c1[0])} ${r1(c1[1])} ${r1(c2[0])} ${r1(c2[1])} ${r1(p2[0])} ${r1(p2[1])}`;
-  }
-  return d;
-};
-const wave = (seed, { w = 600, h = 24, waves = 9, amp = 6 } = {}) => {
-  const rand = rng(seed);
-  const pts = [];
-  const steps = waves * 2;
-  for (let i = 0; i <= steps; i++) {
-    const x = 4 + (i / steps) * (w - 8) + (rand() - 0.5) * 8;
-    const drift = Math.sin((i / steps) * Math.PI) * -2;
-    const y = h / 2 + (i % 2 ? -1 : 1) * amp * (0.55 + rand() * 0.6) + drift;
-    pts.push([x, y]);
-  }
-  return smooth(pts);
-};
-const ring = (seed, start = -105, sweep = 395, base = 92) => {
-  const rand = rng(seed);
-  const pts = [];
-  for (let a = 0; a <= sweep; a += 22) {
-    const t = ((start + a) * Math.PI) / 180;
-    const r = base + (rand() - 0.5) * 5 + (a / sweep) * 3;
-    pts.push([100 + Math.cos(t) * r, 100 + Math.sin(t) * r * 0.985]);
-  }
-  return smooth(pts);
-};
-const svgWave = (seed, cls = "scribble", opts) =>
-  `<svg class="${cls}" viewBox="0 0 ${opts?.w || 600} ${opts?.h || 24}" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="${wave(seed, opts)}"/></svg>`;
-
 const I = {
   download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>',
-  out: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h5v5"/><path d="M19 5 10 14"/><path d="M18 14v5H5V6h5"/></svg>',
-  mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>',
-  pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></svg>',
-  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
-  menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+  out: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>',
   arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>',
+  menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>',
 };
 const logoMark = read("public/logo.svg").replace("<svg ", '<svg aria-hidden="true" focusable="false" ');
+const stop = (t = "") => (/[.!?…:]$/.test(t.trim()) ? esc(t) : `${esc(t)}.`);
 
-const tags = (list = []) =>
-  list.length ? `<ul class="tags" aria-label="Tecnologías">${list.map((t) => `<li class="tag">${esc(t)}</li>`).join("")}</ul>` : "";
+const pills = (list = [], label = "Tecnologías", cls = "") =>
+  list.length ? `<ul class="pills ${cls}" aria-label="${label}">${list.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : "";
 
-const sectionHead = (id, title, note = "") => `
-      <div class="section-head">
-        <h2 class="section-title" id="${id}-title">${esc(title)}${svgWave(id + "-title", "scribble", { w: 600, h: 24, waves: 7, amp: 5 })}</h2>
-        ${note ? `<p class="section-note">${esc(note)}</p>` : ""}
-      </div>`;
+const linkPills = (p, variant = "") => {
+  const items = [
+    p.demo ? `<a class="btn ${variant === "featured" ? "btn-dark" : "btn-primary"} btn-sm" ${ext(p.demo)}>Ver demo${I.out}<span class="visually-hidden"> de ${esc(p.title)} (se abre en otra pestaña)</span></a>` : "",
+    p.repo ? `<a class="btn ${variant === "featured" ? "btn-outline-dark" : "btn-ghost"} btn-sm" ${ext(p.repo)}>Ver código${I.out}<span class="visually-hidden"> de ${esc(p.title)} (se abre en otra pestaña)</span></a>` : "",
+  ].join("");
+  return items ? `<div class="actions">${items}</div>` : "";
+};
+
+const section = (id, title, body, band) => `
+    <section class="section${band ? " band" : ""}" id="${id}" aria-labelledby="${id}-title">
+      <div class="wrap section-grid">
+        <h2 class="section-title" id="${id}-title">${stop(title)}</h2>
+        <div class="section-body">${body}
+        </div>
+      </div>
+    </section>`;
 
 const sections = {
-  estudios: () => {
+  estudios: (band) => {
     const items = education.map((e) => `
-        <li class="entry">
-          <div class="entry-head">
-            <h3 class="entry-title">${esc(e.title)}</h3>
-            ${when(e.start, e.end) ? `<p class="entry-when">${when(e.start, e.end)}</p>` : ""}
-          </div>
-          <p class="entry-org">${esc(e.school)}${e.location ? `<span class="client">, ${esc(e.location)}</span>` : ""}</p>
-          ${e.description ? `<p class="entry-text">${esc(e.description)}</p>` : ""}
-          ${tags(e.tags)}
-        </li>`).join("");
+          <li class="block">
+            ${when(e.start, e.end) ? `<p class="meta">${when(e.start, e.end)}</p>` : ""}
+            <h3 class="block-title">${esc(e.title)}</h3>
+            <p class="org">${esc(e.school)}${e.location ? `<span>, ${esc(e.location)}</span>` : ""}</p>
+            ${e.description ? `<p class="muted">${esc(e.description)}</p>` : ""}
+            ${pills(e.tags, "Materias")}
+          </li>`).join("");
     const langs = (P.languages || []).filter((l) => l.name);
-    return `
-    <section class="section wrap" id="estudios" aria-labelledby="estudios-title">
-      ${sectionHead("estudios", "Estudios")}
-      <ol class="entries" reversed>${items}
-      </ol>
-      ${(P.skills || []).length ? `<div class="side-block skills"><h3>Habilidades</h3>${tags(P.skills).replace('aria-label="Tecnologías"', 'aria-label="Habilidades"')}</div>` : ""}
-      ${langs.length ? `<div class="side-block"><h3>Idiomas</h3><ul class="tags" aria-label="Idiomas">${langs.map((l) => `<li class="tag">${esc(l.name)}${l.level ? `, ${esc(l.level)}` : ""}</li>`).join("")}</ul></div>` : ""}
-    </section>`;
+    const extra = `
+          <div class="feature-grid extras">
+            ${(P.skills || []).length ? `<div class="block block-wide"><h3 class="block-title">Habilidades</h3>${pills(P.skills, "Habilidades", "pills-strong")}</div>` : ""}
+            ${langs.length ? `<div class="block"><h3 class="block-title">Idiomas</h3><ul class="lang-list">${langs.map((l) => `<li><span>${esc(l.name)}</span>${l.level ? `<span class="muted">${esc(l.level)}</span>` : ""}</li>`).join("")}</ul></div>` : ""}
+          </div>`;
+    return section("estudios", "Estudios", `
+          <ol class="feature-grid" reversed>${items}
+          </ol>${extra}`, band);
   },
-  experiencia: () => {
+  experiencia: (band) => {
     const items = experience.map((x) => {
       const dur = duration(x.start, x.end);
       return `
-        <li class="entry">
-          <div class="entry-head">
-            <h3 class="entry-title">${esc(x.role)}</h3>
-            <p class="entry-when">${when(x.start, x.end, !x.end)}${dur ? `<span class="dur">${esc(dur)}</span>` : ""}</p>
-          </div>
-          <p class="entry-org">${esc(x.company)}${x.client ? `<span class="client">, ${esc(x.client)}</span>` : ""}${x.location ? `<span class="client">, ${esc(x.location)}</span>` : ""}</p>
-          ${(x.highlights || []).length ? `<ul class="entry-list">${x.highlights.map((h) => `<li>${esc(h)}</li>`).join("")}</ul>` : ""}
-          ${tags(x.tags)}
-        </li>`;
+          <li class="job">
+            <p class="meta">${when(x.start, x.end, !x.end)}${dur ? `<span class="dur">${esc(dur)}</span>` : ""}</p>
+            <h3 class="job-title">${esc(x.role)}</h3>
+            <p class="org">${esc(x.company)}${x.client ? `<span>, ${esc(x.client)}</span>` : ""}${x.location ? `<span>, ${esc(x.location)}</span>` : ""}</p>
+            ${(x.highlights || []).length ? `<ul class="highlights">${x.highlights.map((h) => `<li>${esc(h)}</li>`).join("")}</ul>` : ""}
+            ${pills(x.tags, "Herramientas")}
+          </li>`;
     }).join("");
-    return `
-    <section class="section wrap" id="experiencia" aria-labelledby="experiencia-title">
-      ${sectionHead("experiencia", "Experiencia laboral")}
-      <ol class="entries" reversed>${items}
-      </ol>
-    </section>`;
+    return section("experiencia", "Experiencia laboral", `
+          <ol class="jobs" reversed>${items}
+          </ol>`, band);
   },
-  proyectos: () => {
-    const items = projects.map((p, i) => {
-      const meta = [p.context, p.year].filter(Boolean).join(", ");
-      const media = p.image
-        ? `<div class="project-media"><img src="${esc(asset(p.image))}" alt="${esc(p.imageAlt || "")}" width="800" height="500" loading="${i < 2 ? "eager" : "lazy"}" decoding="async"></div>`
-        : "";
-      const links = [
-        p.repo ? `<a class="btn btn-ghost btn-small" ${ext(p.repo)}>Ver código${I.out}<span class="visually-hidden"> de ${esc(p.title)} (se abre en otra pestaña)</span></a>` : "",
-        p.demo ? `<a class="btn btn-primary btn-small" ${ext(p.demo)}>Ver demo${I.out}<span class="visually-hidden"> de ${esc(p.title)} (se abre en otra pestaña)</span></a>` : "",
-      ].join("");
-      return `
-        <li>
-          <article class="project" id="proyecto-${esc(p.id)}" aria-labelledby="proyecto-${esc(p.id)}-t">
-            ${media}
-            <div class="project-body">
-              ${meta ? `<p class="project-meta">${esc(meta)}</p>` : ""}
-              <h3 class="project-title" id="proyecto-${esc(p.id)}-t">${esc(p.title)}</h3>
-              <p class="project-summary">${esc(p.summary)}</p>
-              ${p.details ? `<p class="project-details">${esc(p.details)}</p>` : ""}
-              ${tags(p.tags)}
-              ${links ? `<div class="project-links">${links}</div>` : ""}
+  proyectos: (band) => {
+    const img = (p, eager) => p.image
+      ? `<div class="media"><img src="${esc(asset(p.image))}" alt="${esc(p.imageAlt || "")}" width="1600" height="1000" loading="${eager ? "eager" : "lazy"}" decoding="async"></div>`
+      : "";
+    const meta = (p) => [p.context, p.year].filter(Boolean).join(", ");
+    const [first, ...rest] = projects;
+    const featured = first ? `
+          <article class="featured${first.image ? " has-media" : ""}" id="proyecto-${esc(first.id)}" aria-labelledby="proyecto-${esc(first.id)}-t">
+            <div class="featured-copy">
+              ${meta(first) ? `<p class="meta">${esc(meta(first))}</p>` : ""}
+              <h3 class="featured-title" id="proyecto-${esc(first.id)}-t">${esc(first.title)}</h3>
+              <p class="featured-summary">${esc(first.summary)}</p>
+              ${first.details ? `<p class="featured-details">${esc(first.details)}</p>` : ""}
+              ${pills(first.tags)}
+              ${linkPills(first, "featured")}
             </div>
-          </article>
-        </li>`;
-    }).join("");
-    return `
-    <section class="section wrap" id="proyectos" aria-labelledby="proyectos-title">
-      ${sectionHead("proyectos", "Proyectos", S.projectsNote || "")}
-      <ul class="projects">${items}
-      </ul>
-    </section>`;
+            ${img(first, true)}
+          </article>` : "";
+    const items = rest.map((p, i) => `
+            <li>
+              <article class="project" id="proyecto-${esc(p.id)}" aria-labelledby="proyecto-${esc(p.id)}-t">
+                ${img(p, i < 2)}
+                <div class="block">
+                  ${meta(p) ? `<p class="meta">${esc(meta(p))}</p>` : ""}
+                  <h3 class="block-title" id="proyecto-${esc(p.id)}-t">${esc(p.title)}</h3>
+                  <p>${esc(p.summary)}</p>
+                  ${p.details ? `<p class="muted">${esc(p.details)}</p>` : ""}
+                  ${pills(p.tags)}
+                  ${linkPills(p)}
+                </div>
+              </article>
+            </li>`).join("");
+    return section("proyectos", "Proyectos", `${S.projectsNote ? `
+          <p class="section-note">${esc(S.projectsNote)}</p>` : ""}${featured}
+          ${items ? `<ul class="projects">${items}
+          </ul>` : ""}`, band);
   },
 };
 
 const order = (S.order || ["estudios", "experiencia", "proyectos"]).filter((k) => sections[k]);
 const navLabels = { estudios: "Estudios", experiencia: "Experiencia", proyectos: "Proyectos" };
+const navItems = (pre = "") => [...order.map((k) => [k, navLabels[k]]), ["contacto", "Contacto"]]
+  .map(([k, l]) => `<li><a href="${pre}#${k}">${l}</a></li>`).join("\n          ");
 
 const headerFor = (pre = "") => `
   <header class="site-header">
-    <nav class="nav wrap" aria-label="Principal">
+    <nav class="wrap nav" aria-label="Principal">
       <a class="logo" href="${BASE}" aria-label="${esc(P.handle)}, inicio">${logoMark}<span>${esc(P.handle)}</span></a>
       <ul class="nav-links" id="nav-links">
-        ${order.map((k) => `<li><a href="${pre}#${k}">${navLabels[k]}</a></li>`).join("\n        ")}
-        <li><a href="${pre}#contacto">Contacto</a></li>
+          ${navItems(pre)}
       </ul>
       <div class="nav-tools">
-        ${P.cv ? `<a class="btn btn-ghost btn-small" href="${esc(asset(P.cv))}" download>${I.download}<span class="nav-cv-label">Descargar CV</span><span class="visually-hidden"> (PDF)</span></a>` : ""}
+        ${P.cv ? `<a class="btn btn-ghost btn-sm nav-cv" href="${esc(asset(P.cv))}" download>${I.download}<span>CV</span><span class="visually-hidden"> en PDF</span></a>` : ""}
         <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú">${I.menu}</button>
       </div>
     </nav>
   </header>`;
 
+const photoSrc = P.photo.endsWith(".webp") && P.photoFallback ? P.photoFallback : P.photo;
 const photo = P.photo
   ? `<picture>
-          ${P.photo.endsWith(".webp") && P.photoFallback ? `<source srcset="${esc(asset(P.photo))}" type="image/webp">` : ""}
-          <img src="${esc(asset(P.photo.endsWith(".webp") && P.photoFallback ? P.photoFallback : P.photo))}" alt="${esc(P.photoAlt || P.name)}" width="300" height="300" fetchpriority="high" decoding="async">
-        </picture>`
+            ${P.photo.endsWith(".webp") && P.photoFallback ? `<source srcset="${esc(asset(P.photo))}" type="image/webp">` : ""}
+            <img src="${esc(asset(photoSrc))}" alt="${esc(P.photoAlt || P.name)}" width="400" height="400" fetchpriority="high" decoding="async">
+          </picture>`
   : "";
 
+const metaItems = [
+  P.location ? `<li>${esc(P.location)}</li>` : "",
+  P.available && P.availabilityText ? `<li class="available"><span class="dot" aria-hidden="true"></span>${esc(P.availabilityText)}</li>` : "",
+  P.linkedin ? `<li><a ${ext(P.linkedin)}>LinkedIn</a></li>` : "",
+  P.github ? `<li><a ${ext(P.github)}>GitHub</a></li>` : "",
+].filter(Boolean).join("\n          ");
+
 const hero = `
-    <section class="hero wrap" aria-labelledby="nombre">
-      <div class="hero-copy">
-        <h1 class="hero-name" id="nombre">
-          <span class="line line-1">${esc(P.nameLine1)}</span>
-          <span class="line line-2">${esc(P.nameLine2)}</span>
-          ${svgWave("hero", "scribble draw", { w: 600, h: 24, waves: 10, amp: 6 }).replace('focusable="false">', 'focusable="false"><defs><linearGradient id="neon" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#2e8bff"/><stop offset="1" stop-color="#ff2bd6"/></linearGradient></defs>')}
+    <section class="hero" aria-labelledby="nombre">
+      <div class="wrap">
+        <h1 class="wordmark" id="nombre">
+          <span class="line"><span>${esc(P.nameLine1)}</span></span>
+          <span class="line"><span>${esc(P.nameLine2)}</span></span>
         </h1>
-        <p class="hero-role">${esc(P.role)}</p>
-        <p class="hero-summary">${esc(P.summary)}</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#proyectos">Ver proyectos${I.arrowDown}</a>
-          ${P.email ? `<a class="btn btn-ghost" href="mailto:${esc(P.email)}">${I.mail}Escríbeme</a>` : ""}
+        <div class="hero-grid">
+          ${photo ? `<div class="portrait">${photo}</div>` : ""}
+          <div class="statement">
+            <p class="statement-title">${stop(P.role)}</p>
+            <p class="statement-text">${esc(P.summary)}</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#proyectos">Ver proyectos${I.arrowDown}</a>
+              ${P.email ? `<a class="btn btn-ghost" href="mailto:${esc(P.email)}">Escríbeme</a>` : ""}
+            </div>
+          </div>
         </div>
-        <ul class="hero-meta">
-          ${P.location ? `<li>${I.pin}<span>${esc(P.location)}</span></li>` : ""}
-          ${P.available && P.availabilityText ? `<li class="ok">${I.check}<span>${esc(P.availabilityText)}</span></li>` : ""}
+        ${metaItems ? `<ul class="hero-meta">
+          ${metaItems}
+        </ul>` : ""}
+      </div>
+    </section>`;
+
+const contact = section("contacto", "Contacto", `
+          <p class="lead">${esc(P.contactText || "¿Buscas a alguien para implantación, soporte técnico o desarrollo? Escríbeme y hablamos.")}</p>
+          ${P.email ? `<a class="contact-mail" href="mailto:${esc(P.email)}">${esc(P.email)}</a>` : ""}
+          <div class="actions">
+            ${P.cv ? `<a class="btn btn-primary" href="${esc(asset(P.cv))}" download>${I.download}Descargar CV</a>` : ""}
+            ${P.linkedin ? `<a class="btn btn-ghost" ${ext(P.linkedin)}>LinkedIn${I.out}</a>` : ""}
+            ${P.github ? `<a class="btn btn-ghost" ${ext(P.github)}>GitHub${I.out}</a>` : ""}
+            ${P.phone ? `<a class="btn btn-ghost" href="tel:${esc(P.phone.replace(/\s+/g, ""))}">${esc(P.phone)}</a>` : ""}
+          </div>`, order.length % 2 === 1);
+
+const footerFor = (pre = "") => `
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="footer-mark" aria-hidden="true">${logoMark}<span>${esc(P.handle)}</span></p>
+      <div class="footer-cols">
+        <nav aria-label="Secciones"><ul>
+          ${navItems(pre)}
+        </ul></nav>
+        <ul>
+          ${P.email ? `<li><a href="mailto:${esc(P.email)}">${esc(P.email)}</a></li>` : ""}
           ${P.linkedin ? `<li><a ${ext(P.linkedin)}>LinkedIn</a></li>` : ""}
           ${P.github ? `<li><a ${ext(P.github)}>GitHub</a></li>` : ""}
         </ul>
       </div>
-      <div class="portrait">
-        ${photo}
-        <svg class="ring draw" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><path pathLength="1" d="${ring("ring-a")}"/></svg>
+      <div class="footer-legal">
+        <p>© ${now.getFullYear()} ${esc(P.name)}</p>
+        <p>Actualizado en ${updatedLabel}</p>
       </div>
-    </section>`;
-
-const contact = `
-    <section class="section wrap contact" id="contacto" aria-labelledby="contacto-title">
-      ${sectionHead("contacto", "Contacto")}
-      <p class="contact-lead">${esc(P.contactText || "¿Buscas a alguien para implantación, soporte técnico o desarrollo? Escríbeme y hablamos.")}</p>
-      ${P.email ? `<a class="contact-mail" href="mailto:${esc(P.email)}">${esc(P.email)}</a>` : ""}
-      <div class="contact-actions">
-        ${P.linkedin ? `<a class="btn btn-ghost" ${ext(P.linkedin)}>LinkedIn${I.out}</a>` : ""}
-        ${P.github ? `<a class="btn btn-ghost" ${ext(P.github)}>GitHub${I.out}</a>` : ""}
-        ${P.phone ? `<a class="btn btn-ghost" href="tel:${esc(P.phone.replace(/\s+/g, ""))}">${esc(P.phone)}</a>` : ""}
-        ${P.cv ? `<a class="btn btn-primary" href="${esc(asset(P.cv))}" download>${I.download}Descargar CV</a>` : ""}
-      </div>
-    </section>`;
-
-const footer = `
-    <footer class="site-footer wrap">
-      <p>© ${now.getFullYear()} ${esc(P.name)}</p>
-      <p>Actualizado en ${updatedLabel}</p>
-    </footer>`;
+    </div>
+  </footer>`;
 
 const ogImage = absUrl(S.ogImage || P.photo);
 const [locality, region] = (P.location || "").split(",").map((s) => s.trim());
@@ -358,11 +344,9 @@ const seoExtra = `
 
 const page = `${head({ title: S.title, description: S.description, canonical: SITE, extra: seoExtra })}
 <body>
-  <a class="skip" href="#contenido">Saltar al contenido</a>
-  <div class="sheet">${headerFor()}
-    <main id="contenido">${hero}${order.map((k) => sections[k]()).join("")}${contact}
-    </main>${footer}
-  </div>
+  <a class="skip" href="#contenido">Saltar al contenido</a>${headerFor()}
+  <main id="contenido">${hero}${order.map((k, i) => sections[k](i % 2 === 1)).join("")}${contact}
+  </main>${footerFor()}
   <script>${js}</script>
 </body>
 </html>
@@ -370,13 +354,14 @@ const page = `${head({ title: S.title, description: S.description, canonical: SI
 
 const notFound = `${head({ title: `Página no encontrada | ${P.name}`, description: "Esta página no existe.", robots: "noindex, follow" })}
 <body>
-  <div class="sheet">${headerFor(BASE)}
-    <main class="wrap notfound" id="contenido">
-      <h1>404${svgWave("404", "scribble", { w: 600, h: 24, waves: 4, amp: 6 }).replace('class="scribble"', 'class="scribble" style="width:3em;height:.3em;color:var(--ink)"')}</h1>
-      <p class="hero-summary">Esta página no existe o ha cambiado de sitio.</p>
-      <div class="hero-actions"><a class="btn btn-primary" href="${BASE}">Volver al inicio</a></div>
-    </main>
-  </div>
+${headerFor(BASE)}
+  <main class="hero notfound" id="contenido">
+    <div class="wrap">
+      <h1 class="wordmark"><span class="line"><span>404</span></span></h1>
+      <p class="statement-title">Esta página no existe.</p>
+      <div class="actions"><a class="btn btn-primary" href="${BASE}">Volver al inicio</a></div>
+    </div>
+  </main>${footerFor(BASE)}
   <script>${js}</script>
 </body>
 </html>
