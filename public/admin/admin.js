@@ -168,7 +168,7 @@ async function loadContent() {
 const draftKey = () => `admin:draft:${S.cfg.owner}/${S.cfg.repo}`;
 const referencedFiles = () => {
   const json = JSON.stringify(S.data);
-  return [...S.files.entries()].filter(([, f]) => json.includes(`"${f.sitePath}"`));
+  return [...S.files.entries()].filter(([, f]) => json.includes(`"${f.parent || f.sitePath}"`));
 };
 const isDirty = () => !!S.data && (JSON.stringify(S.data) !== S.originalNorm || referencedFiles().length > 0);
 const LABELS = { settings: "Ajustes y SEO", profile: "Perfil", experience: "Experiencia", education: "Estudios", projects: "Proyectos" };
@@ -189,7 +189,7 @@ function updateStatus() {
   const dirty = isDirty();
   const st = $("#status");
   const sections = changedSections();
-  const nFiles = referencedFiles().length;
+  const nFiles = referencedFiles().filter(([, f]) => !f.parent).length;
   st.classList.toggle("dirty", dirty);
   st.textContent = dirty
     ? `Cambios sin publicar en ${[...sections.map((k) => LABELS[k].toLowerCase()), ...(nFiles ? [`${nFiles} ${nFiles === 1 ? "imagen" : "imágenes"}`] : [])].join(", ")}`
@@ -227,17 +227,16 @@ async function processImage(file, { w, h: hh, type = "image/webp" }) {
   if (!blob || blob.type !== type) blob = await new Promise((r) => canvas.toBlob(r, "image/jpeg", 0.88));
   return blob;
 }
-function addPending(blob, dir, name) {
+function addPending(blob, dir, name, parent) {
   const extn = { "image/webp": "webp", "image/jpeg": "jpg", "image/png": "png", "application/pdf": "pdf" }[blob.type] || "bin";
   const sitePath = `${dir}/${name}.${extn}`;
-  const url = URL.createObjectURL(blob);
-  S.files.set("public/" + sitePath, { blob, sitePath });
-  S.previews.set(sitePath, url);
+  S.files.set("public/" + sitePath, { blob, sitePath, parent });
+  if (!parent) S.previews.set(sitePath, URL.createObjectURL(blob));
   return sitePath;
 }
 const IMAGE_KINDS = {
-  project: { w: 1600, h: 1000, dir: "uploads", round: false, hint: "Se recorta a 16:10 y se optimiza a WebP." },
-  photo: { w: 800, h: 800, dir: "img", round: true, hint: "Se recorta en cuadrado y se optimiza a WebP." },
+  project: { w: 1600, h: 1000, small: 800, dir: "uploads", round: false, hint: "Se recorta a 16:10 y se optimiza a WebP." },
+  photo: { w: 800, h: 800, small: 400, dir: "img", round: true, hint: "Se recorta en cuadrado y se optimiza a WebP." },
   og: { w: 1200, h: 630, dir: "img", round: false, type: "image/jpeg", hint: "Imagen al compartir en redes: 1200 × 630, JPG." },
 };
 
@@ -326,7 +325,13 @@ function imageField(def, obj, set, label, hint) {
     try {
       const blob = await processImage(file, kind);
       const base = def.kind === "photo" ? "alberto" : def.kind === "og" ? "og" : slug(obj.title || file.name.replace(/\.[^.]+$/, ""));
-      set(addPending(blob, kind.dir, `${base}-${Date.now().toString(36)}`));
+      const name = `${base}-${Date.now().toString(36)}`;
+      const path = addPending(blob, kind.dir, name);
+      if (kind.small) {
+        const small = await processImage(file, { ...kind, w: kind.small, h: Math.round((kind.small * kind.h) / kind.w) });
+        addPending(small, kind.dir, `${name}-${kind.small}w`, path);
+      }
+      set(path);
       if (def.kind === "photo") obj.photoFallback = "";
     } catch {
       toast("No he podido leer esa imagen. Prueba con un JPG, PNG o WebP.");
@@ -602,7 +607,7 @@ function openPublish() {
   const files = referencedFiles();
   $("#change-list").replaceChildren(
     ...sections.map((k) => h("li", { text: LABELS[k] })),
-    ...files.map(([path]) => h("li", { text: `Nuevo archivo: ${path.replace(/^public\//, "")}` })));
+    ...files.filter(([, f]) => !f.parent).map(([path]) => h("li", { text: `Nuevo archivo: ${path.replace(/^public\//, "")}` })));
   const f = $("#publish-form");
   f.message.value = `Actualiza ${sections.map((k) => LABELS[k].toLowerCase()).join(", ") || "archivos"} desde el panel`;
   $("#publish-error").hidden = true;

@@ -1,5 +1,5 @@
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync, readdirSync } from "node:fs";
+import { dirname, join, basename, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -21,6 +21,44 @@ const isAbs = (u) => /^(https?:)?\/\//.test(u) || u.startsWith("mailto:") || u.s
 const asset = (u) => (!u ? "" : isAbs(u) ? u : BASE + u.replace(/^\/+/, ""));
 const absUrl = (u) => (!u ? "" : isAbs(u) ? u : new URL(u.replace(/^\/+/, ""), SITE).href);
 const ext = (href) => `href="${esc(href)}" target="_blank" rel="noopener"`;
+
+const imageSize = (file) => {
+  try {
+    const b = readFileSync(file);
+    if (b.toString("ascii", 0, 4) === "RIFF" && b.toString("ascii", 8, 12) === "WEBP") {
+      const chunk = b.toString("ascii", 12, 16);
+      if (chunk === "VP8X") return { w: 1 + b.readUIntLE(24, 3), h: 1 + b.readUIntLE(27, 3) };
+      if (chunk === "VP8L") { const n = b.readUInt32LE(21); return { w: (n & 0x3fff) + 1, h: ((n >> 14) & 0x3fff) + 1 }; }
+      if (chunk === "VP8 ") return { w: b.readUInt16LE(26) & 0x3fff, h: b.readUInt16LE(28) & 0x3fff };
+    }
+    if (b.readUInt32BE(0) === 0x89504e47) return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+    if (b[0] === 0xff && b[1] === 0xd8) {
+      let i = 2;
+      while (i < b.length) {
+        const marker = b[i + 1], len = b.readUInt16BE(i + 2);
+        if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) return { w: b.readUInt16BE(i + 7), h: b.readUInt16BE(i + 5) };
+        i += 2 + len;
+      }
+    }
+  } catch {}
+  return null;
+};
+
+const picture = (src, { alt = "", sizes = "100vw", eager = false, cls = "" } = {}) => {
+  if (!src) return "";
+  const local = !isAbs(src) && join(ROOT, "public", src);
+  const size = local ? imageSize(local) : null;
+  let srcset = "";
+  if (local && existsSync(dirname(local))) {
+    const base = basename(src, extname(src));
+    const re = new RegExp(`^${base.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}-(\\d+)w${extname(src).replace(".", "\\.")}$`);
+    const variants = readdirSync(dirname(local))
+      .map((f) => { const m = re.exec(f); return m ? { w: +m[1], url: asset(`${dirname(src)}/${f}`) } : null; })
+      .filter(Boolean).sort((a, b) => a.w - b.w);
+    if (variants.length && size) srcset = [...variants.map((v) => `${v.url} ${v.w}w`), `${asset(src)} ${size.w}w`].join(", ");
+  }
+  return `<img${cls ? ` class="${cls}"` : ""} src="${esc(asset(src))}"${srcset ? ` srcset="${esc(srcset)}" sizes="${sizes}"` : ""} alt="${esc(alt)}"${size ? ` width="${size.w}" height="${size.h}"` : ""} ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+};
 
 const MONTHS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 const MONTHS_LONG = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
@@ -123,9 +161,7 @@ const sections = {
           </ol>`, band);
   },
   proyectos: (band) => {
-    const img = (p, eager) => p.image
-      ? `<div class="media"><img src="${esc(asset(p.image))}" alt="${esc(p.imageAlt || "")}" width="1600" height="1000" loading="${eager ? "eager" : "lazy"}" decoding="async"></div>`
-      : "";
+    const img = (p, sizes) => p.image ? `<div class="media">${picture(p.image, { alt: p.imageAlt, sizes })}</div>` : "";
     const meta = (p) => [p.context, p.year].filter(Boolean).join(", ");
     const [first, ...rest] = projects;
     const featured = first ? `
@@ -138,12 +174,12 @@ const sections = {
               ${pills(first.tags)}
               ${linkPills(first, "featured")}
             </div>
-            ${img(first, true)}
+            ${img(first, "(max-width: 64rem) calc(100vw - 2rem), 22rem")}
           </article>` : "";
-    const items = rest.map((p, i) => `
+    const items = rest.map((p) => `
             <li>
               <article class="project" id="proyecto-${esc(p.id)}" aria-labelledby="proyecto-${esc(p.id)}-t">
-                ${img(p, i < 2)}
+                ${img(p, "(max-width: 46rem) calc(100vw - 2rem), (max-width: 52rem) 45vw, 22rem")}
                 <div class="block">
                   ${meta(p) ? `<p class="meta">${esc(meta(p))}</p>` : ""}
                   <h3 class="block-title" id="proyecto-${esc(p.id)}-t">${esc(p.title)}</h3>
@@ -180,13 +216,8 @@ const headerFor = (pre = "") => `
     </nav>
   </header>`;
 
-const photoSrc = P.photo.endsWith(".webp") && P.photoFallback ? P.photoFallback : P.photo;
-const photo = P.photo
-  ? `<picture>
-            ${P.photo.endsWith(".webp") && P.photoFallback ? `<source srcset="${esc(asset(P.photo))}" type="image/webp">` : ""}
-            <img src="${esc(asset(photoSrc))}" alt="${esc(P.photoAlt || P.name)}" width="400" height="400" fetchpriority="high" decoding="async">
-          </picture>`
-  : "";
+const photoSrc = P.photo && P.photo.endsWith(".webp") && P.photoFallback ? P.photoFallback : P.photo;
+const photo = photoSrc ? picture(photoSrc, { alt: P.photoAlt || P.name, sizes: "(max-width: 52rem) 8rem, 17rem", eager: true }) : "";
 
 const metaItems = [
   P.location ? `<li>${esc(P.location)}</li>` : "",

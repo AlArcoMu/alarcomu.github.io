@@ -3,8 +3,7 @@
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  font-stretch: 62% 125%;
-  src: url("/fonts/archivo.woff2") format("woff2-variations"), url("/fonts/archivo.woff2") format("woff2");
+  src: url("/fonts/archivo.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
@@ -38,6 +37,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
 body {
+  position: relative;
   margin: 0;
   background: var(--canvas);
   color: var(--text);
@@ -136,7 +136,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .wordmark {
   font-size: var(--fs-wordmark);
-  font-weight: 760; font-stretch: 104%;
+  font-weight: 760;
   letter-spacing: -0.045em; line-height: 0.86;
 }
 .wordmark .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
@@ -228,10 +228,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .featured.has-media { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .featured-copy { display: grid; gap: 1rem; align-content: start; }
-.featured .meta { color: rgb(0 0 0 / 0.68); }
+.featured .meta { color: var(--on-accent); font-weight: 600; }
 .featured-title { font-size: var(--fs-heading); letter-spacing: -0.025em; line-height: 1.02; }
 .featured-summary { font-size: var(--fs-body); }
-.featured-details { color: rgb(0 0 0 / 0.72); font-size: 0.97rem; }
+.featured-details { color: var(--on-accent); font-size: 0.97rem; }
 .featured .pills li { border-color: rgb(0 0 0 / 0.3); color: var(--on-accent); }
 .featured .actions { margin-top: 0.6rem; }
 @media (max-width: 64rem) { .featured.has-media { grid-template-columns: 1fr; } .featured .media { order: -1; } }
@@ -258,7 +258,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .site-footer { background: var(--canvas); border-top: 1px solid var(--hairline); padding-block: clamp(3rem, 2rem + 4vw, 5.5rem) 2rem; }
 .footer-mark {
   display: flex; align-items: center; gap: clamp(0.75rem, 0.4rem + 1.5vw, 2rem);
-  font-size: clamp(3.2rem, 1rem + 10vw, 10rem); font-weight: 760; font-stretch: 104%;
+  font-size: clamp(3.2rem, 1rem + 10vw, 10rem); font-weight: 760;
   letter-spacing: -0.05em; line-height: 0.9;
 }
 .footer-mark svg { width: 0.95em; height: auto; flex: none; }

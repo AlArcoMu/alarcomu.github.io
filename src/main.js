@@ -12,9 +12,13 @@
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 
   const header = document.querySelector(".site-header");
-  const onScroll = () => header?.classList.toggle("is-scrolled", window.scrollY > 8);
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
+  if (header && "IntersectionObserver" in window) {
+    const sentinel = document.createElement("div");
+    sentinel.setAttribute("aria-hidden", "true");
+    sentinel.style.cssText = "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none";
+    document.body.prepend(sentinel);
+    new IntersectionObserver(([entry]) => header.classList.toggle("is-scrolled", !entry.isIntersecting)).observe(sentinel);
+  }
 
   const navMap = new Map([...document.querySelectorAll('.nav-links a[href^="#"]')].map((a) => [a.getAttribute("href").slice(1), a]));
   if ("IntersectionObserver" in window && navMap.size) {
