@@ -216,6 +216,23 @@
       "demo": ""
     },
     {
+      "id": "bus-tracking",
+      "title": "Seguimiento de autobuses",
+      "year": "2024",
+      "context": "Prácticas en Kanzan Tech",
+      "summary": "Aplicación multiplataforma para seguir los autobuses de una flota, desarrollada durante las prácticas del ciclo de DAM.",
+      "details": "Construida con la plataforma low-code OutSystems.",
+      "image": "uploads/seguimiento-de-autobuses-mvqi2guv.webp",
+      "imageAlt": "App de seguimiento de autobuses en tres móviles: listado de trayectos con buscador, mapa con la posición del autobús en tiempo real y pantalla del conductor para compartir su ubicación",
+      "tags": [
+        "OutSystems",
+        "Low-code",
+        "Multiplataforma"
+      ],
+      "repo": "",
+      "demo": ""
+    },
+    {
       "id": "logql-builder",
       "title": "Generador de consultas LogQL",
       "year": "2026",
@@ -249,23 +266,6 @@
         "PostgreSQL",
         "SQL",
         "Visualización 3D"
-      ],
-      "repo": "",
-      "demo": ""
-    },
-    {
-      "id": "bus-tracking",
-      "title": "Seguimiento de autobuses",
-      "year": "2024",
-      "context": "Prácticas en Kanzan Tech",
-      "summary": "Aplicación multiplataforma para seguir los autobuses de una flota, desarrollada durante las prácticas del ciclo de DAM.",
-      "details": "Construida con la plataforma low-code OutSystems.",
-      "image": "uploads/seguimiento-de-autobuses-mvqi2guv.webp",
-      "imageAlt": "App de seguimiento de autobuses en tres móviles: listado de trayectos con buscador, mapa con la posición del autobús en tiempo real y pantalla del conductor para compartir su ubicación",
-      "tags": [
-        "OutSystems",
-        "Low-code",
-        "Multiplataforma"
       ],
       "repo": "",
       "demo": ""
