@@ -302,6 +302,7 @@ const footerFor = (pre = "") => `
       </div>
       <div class="footer-legal">
         <p>© ${now.getFullYear()} ${esc(P.name)}</p>
+        <p><a href="${BASE}privacidad/">Privacidad y cookies</a></p>
         <p>Actualizado en ${updatedLabel}</p>
       </div>
     </div>
@@ -409,6 +410,46 @@ const page = `${head({ title: S.title, description: S.description, canonical: SI
 </html>
 `;
 
+const privacyUrl = `${SITE}privacidad/`;
+const privacyPage = `${head({ title: `Privacidad y cookies | ${P.name}`, description: `Cómo trata los datos la web de ${P.name}: sin cookies, sin analítica y sin contenido de terceros.`, canonical: privacyUrl })}
+<body>
+  <a class="skip" href="#contenido">Saltar al contenido</a>${headerFor(BASE)}
+  <main id="contenido">
+    <section class="section legal" aria-labelledby="privacidad-title">
+      <div class="wrap section-grid">
+        <h1 class="section-title" id="privacidad-title">Privacidad y cookies.</h1>
+        <div class="section-body">
+          <div class="block">
+            <h2 class="block-title">Sin cookies</h2>
+            <p>Esta web no usa cookies ni tecnologías similares, como el almacenamiento local del navegador, para analítica, publicidad ni seguimiento. Tampoco carga contenido de terceros: la tipografía y las imágenes se sirven desde este mismo dominio. Por eso no verás ningún aviso de cookies.</p>
+            <p class="muted">Si en el futuro se añade algún servicio que las necesite, se te pedirá el consentimiento antes de activarlo y se actualizará esta página.</p>
+          </div>
+          <div class="block">
+            <h2 class="block-title">Responsable</h2>
+            <p>${esc(P.name)}${P.location ? `, ${esc(P.location)}` : ""}.${P.email ? ` Contacto: <a href="mailto:${esc(P.email)}">${esc(P.email)}</a>.` : ""}</p>
+          </div>
+          <div class="block">
+            <h2 class="block-title">Qué datos se tratan</h2>
+            <ul class="highlights">
+              <li><strong>Si me escribes por email</strong>, uso tus datos solo para responderte. No se ceden a terceros y se conservan el tiempo necesario para atender tu mensaje.</li>
+              <li><strong>Alojamiento.</strong> La web está alojada en GitHub Pages, de GitHub, Inc. Como cualquier servidor, puede registrar la dirección IP de quien visita la web por motivos de seguridad. Más información en la <a ${ext("https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement")}>declaración de privacidad de GitHub</a>.</li>
+              <li><strong>Enlaces externos.</strong> Al pulsar en LinkedIn o GitHub sales de esta web y se aplican las políticas de esos sitios.</li>
+            </ul>
+          </div>
+          <div class="block">
+            <h2 class="block-title">Tus derechos</h2>
+            <p>Puedes pedir el acceso, la rectificación o la supresión de tus datos, así como oponerte a su tratamiento o limitarlo, escribiendo ${P.email ? `a <a href="mailto:${esc(P.email)}">${esc(P.email)}</a>` : "por email"}. Si consideras que no se han respetado tus derechos, puedes reclamar ante la <a ${ext("https://www.aepd.es")}>Agencia Española de Protección de Datos</a>.</p>
+            <p class="meta">Última actualización: ${updatedLabel}.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>${footerFor(BASE)}
+  <script>${js}</script>
+</body>
+</html>
+`;
+
 const notFound = `${head({ title: `Página no encontrada | ${P.name}`, description: "Esta página no existe.", robots: "noindex, follow" })}
 <body>
 ${headerFor(BASE)}
@@ -435,6 +476,12 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <image:image><image:loc>${esc(absUrl(P.photoFallback || P.photo))}</image:loc></image:image>${projects.filter((p) => p.image).map((p) => `
     <image:image><image:loc>${esc(absUrl(p.image))}</image:loc></image:image>`).join("")}
   </url>
+  <url>
+    <loc>${esc(privacyUrl)}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
 </urlset>
 `;
 const robots = `User-agent: *
@@ -457,6 +504,8 @@ mkdirSync(DIST, { recursive: true });
 if (existsSync(join(ROOT, "public"))) cpSync(join(ROOT, "public"), DIST, { recursive: true });
 writeFileSync(join(DIST, "index.html"), page);
 writeFileSync(join(DIST, "404.html"), notFound);
+mkdirSync(join(DIST, "privacidad"), { recursive: true });
+writeFileSync(join(DIST, "privacidad", "index.html"), privacyPage);
 writeFileSync(join(DIST, "sitemap.xml"), sitemap);
 writeFileSync(join(DIST, "robots.txt"), robots);
 writeFileSync(join(DIST, "site.webmanifest"), manifest);

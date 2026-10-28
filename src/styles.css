@@ -295,7 +295,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 1.5rem clamp(3rem, 2rem + 6vw, 8rem);
   margin-top: clamp(2.5rem, 2rem + 2vw, 4rem); font-size: 1.15rem;
 }
-.footer-cols ul { display: grid; gap: 0.5rem; }
+.footer-cols ul { display: grid; gap: 0.5rem; align-content: start; }
 .footer-cols a { color: var(--muted); text-decoration: none; }
 .footer-cols a:hover { color: var(--text); }
 .footer-legal {
@@ -304,6 +304,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   font-size: var(--fs-caption); color: var(--muted);
 }
 @media (max-width: 40rem) { .footer-cols { grid-template-columns: 1fr; } }
+
+.legal .block p + p { margin-top: 0.75rem; }
+.legal .block a { color: var(--blue-strong); }
+.footer-legal a { color: inherit; }
+.footer-legal a:hover { color: var(--text); }
 
 .notfound { min-height: 70vh; display: grid; align-content: center; }
 .notfound .wrap { display: grid; gap: 2rem; }
