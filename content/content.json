@@ -233,6 +233,26 @@
       "demo": ""
     },
     {
+      "id": "analizador-de-rechazos-qkw9",
+      "title": "Analizador de rechazos",
+      "year": "2026",
+      "context": "Herramienta interna",
+      "summary": "App de escritorio que analiza los logs exportados de Grafana Loki: separa los palés que llegan a su destino de los rechazados, extrae los motivos de cada rechazo y calcula los porcentajes por mesa y por día.",
+      "details": "Hecha en Python con tkinter y empaquetada como .exe portable. Lee varios JSON a la vez y genera un informe en Excel y PDF con el resumen por día y mesa, el desglose de cada palé y la frecuencia de cada motivo. Incluye una ayuda con la consulta LogQL para exportar los datos.",
+      "image": "uploads/analizador-de-rechazos-mvsaqi60.webp",
+      "imageAlt": "Analizador de rechazos con datos de ejemplo: ventana del programa, informe en PDF con el desglose por mesa y palé, y hoja de Excel con el resumen",
+      "tags": [
+        "Python",
+        "tkinter",
+        "Grafana Loki",
+        "LogQL",
+        "Excel",
+        "PDF"
+      ],
+      "repo": "",
+      "demo": ""
+    },
+    {
       "id": "logql-builder",
       "title": "Generador de consultas LogQL",
       "year": "2026",
@@ -247,25 +267,6 @@
         "Electron",
         "Grafana Loki",
         "LogQL"
-      ],
-      "repo": "",
-      "demo": ""
-    },
-    {
-      "id": "silo-3d",
-      "title": "Mapa 3D de un silo de palés",
-      "year": "2026",
-      "context": "Herramienta interna",
-      "summary": "Vista 3D de un silo automático de ocho pasillos con doble fondo, donde cada posición se colorea según esté ocupada, libre, deshabilitada o con error.",
-      "details": "Un workflow sincroniza una instantánea completa del silo desde IBM DB2 a una base PostgreSQL, y el mapa la pinta para localizar errores de un vistazo.",
-      "image": "",
-      "imageAlt": "",
-      "tags": [
-        "Retool",
-        "IBM DB2",
-        "PostgreSQL",
-        "SQL",
-        "Visualización 3D"
       ],
       "repo": "",
       "demo": ""
@@ -454,18 +455,12 @@
         "details": "Detects modules, log levels, time ranges and identifiers without using AI. Favourites, history, real-time validation, dark mode and keyboard shortcuts. Packaged as an executable with Electron.",
         "imageAlt": "LogQL query builder in light and dark mode: module, log level and time range selection, with a live preview of the generated query"
       },
-      "silo-3d": {
-        "title": "3D map of a pallet silo",
+      "analizador-de-rechazos-qkw9": {
+        "title": "Rejection analyser",
         "context": "Internal tool",
-        "summary": "3D view of an eight-aisle automated silo with double-deep racking, where each location is coloured according to whether it's occupied, free, disabled or in error.",
-        "details": "A workflow syncs a full snapshot of the silo from IBM DB2 to a PostgreSQL database, and the map renders it so errors can be spotted at a glance.",
-        "tags": [
-          "Retool",
-          "IBM DB2",
-          "PostgreSQL",
-          "SQL",
-          "3D visualisation"
-        ]
+        "summary": "Desktop app that analyses Fleet Manager logs exported from Grafana Loki: it separates pallets that reach their destination from rejected ones, extracts the reasons for each rejection and works out rejection rates by table and by day.",
+        "details": "Built in Python with tkinter and packaged as a portable .exe. It reads several JSON files at once and produces an Excel and PDF report with a summary by day and table, a per-pallet breakdown and how often each reason comes up. Includes a help screen with the LogQL query for exporting the data.",
+        "imageAlt": "Rejection analyser with sample data: the app window, a PDF report broken down by table and pallet, and an Excel sheet with the summary"
       }
     },
     "hobbies": {
