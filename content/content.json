@@ -239,8 +239,8 @@
       "context": "Herramienta interna",
       "summary": "App de escritorio para construir consultas de Grafana Loki sin memorizar la sintaxis: escribes lo que buscas en lenguaje natural y la app genera la consulta.",
       "details": "Detección de módulos, niveles de log, rangos de tiempo e identificadores sin usar IA. Favoritos, historial, validación en tiempo real, modo oscuro y atajos de teclado. Empaquetada como ejecutable con Electron.",
-      "image": "",
-      "imageAlt": "",
+      "image": "uploads/generador-de-consultas-logql-mvryfgrb.webp",
+      "imageAlt": "Generador de consultas LogQL en modo claro y oscuro: selección de módulo, nivel de log y rango de tiempo, con la vista previa de la consulta generada",
       "tags": [
         "React",
         "Vite",
@@ -451,7 +451,8 @@
         "title": "LogQL query builder",
         "context": "Internal tool",
         "summary": "Desktop app for building Grafana Loki queries without memorising the syntax: you describe what you're looking for in plain language and the app writes the query.",
-        "details": "Detects modules, log levels, time ranges and identifiers without using AI. Favourites, history, real-time validation, dark mode and keyboard shortcuts. Packaged as an executable with Electron."
+        "details": "Detects modules, log levels, time ranges and identifiers without using AI. Favourites, history, real-time validation, dark mode and keyboard shortcuts. Packaged as an executable with Electron.",
+        "imageAlt": "LogQL query builder in light and dark mode: module, log level and time range selection, with a live preview of the generated query"
       },
       "silo-3d": {
         "title": "3D map of a pallet silo",
