@@ -105,7 +105,15 @@ a { color: var(--ink); }
 .panel-head h1 { font-size: 1.7rem; }
 .panel-head p { margin-top: .3rem; }
 .card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 16px; padding: 1.5rem; display: grid; gap: 1.1rem; }
-.card h2 { font-size: 1.1rem; }
+.card h2, .card h3 { font-size: 1.1rem; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.group-title { font-size: 1.3rem; margin-top: 1rem; }
+.chip { flex: none; font-size: .78rem; font-weight: 650; padding: .2rem .6rem; border-radius: 999px; border: 1px solid currentColor; }
+.chip.ok { color: var(--ink-strong); }
+.chip.warn { color: var(--warn); }
+.chip.bad { color: var(--magenta); }
+.ref { display: flex; gap: .55rem; align-items: baseline; color: var(--muted); font-size: .85rem; line-height: 1.45; padding: .45rem .7rem; border-left: 2px solid var(--rule); background: var(--paper); border-radius: 0 8px 8px 0; white-space: pre-line; }
+.ref-tag { flex: none; font-size: .7rem; font-weight: 700; letter-spacing: .06em; color: var(--ink-strong); }
 
 .items { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
 .item {

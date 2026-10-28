@@ -73,7 +73,7 @@
       },
       {
         "name": "Inglés",
-        "level": ""
+        "level": "B2"
       }
     ],
     "contactText": "¿Buscas a alguien para implantación, soporte técnico o desarrollo? Escríbeme y hablamos."
@@ -178,7 +178,7 @@
       "title": "Diario de Estudio con agentes de IA",
       "year": "2026",
       "context": "Curso «El Nuevo Programador» de MoureDev",
-      "summary": "\tWeb para registrar sesiones de estudio y seguir tu constancia: racha, estadísticas, mapa de calor de 52 semanas, reparto por temas y objetivo semanal.",
+      "summary": "Web para registrar sesiones de estudio y seguir tu constancia: racha, estadísticas, mapa de calor de 52 semanas, reparto por temas y objetivo semanal.",
       "details": "Desarrollada con Spec-Driven Development y un sistema multiagente en OpenCode (planificador, implementador, revisor y coordinador): cada funcionalidad parte de una spec, un plan y tareas verificables. Lógica separada del DOM y cubierta con 37 tests en node:test.",
       "image": "uploads/diario-de-estudio-con-agentes-de-ia-mvpiq6ps.webp",
       "imageAlt": "Panel del Diario de Estudio con racha de días, mapa de calor anual, reparto de temas y progreso del objetivo semanal",
@@ -202,7 +202,7 @@
       "summary": "Tienda online dividida en servicios independientes de usuarios, catálogo y pedidos, cada uno con su propia base de datos, detrás de un gateway Nginx.",
       "details": "Autenticación con JWT, caché del catálogo en Redis y entorno completo levantado con docker-compose. Integración continua con GitHub Actions y desarrollo por ramas y pull requests.",
       "image": "uploads/e-commerce-con-microservicios-mvpjsxo0.webp",
-      "imageAlt": "E-commerce",
+      "imageAlt": "Tres pantallas de la tienda online: catálogo con filtros por categoría, ficha de producto con galería y carrito con el resumen del pedido",
       "tags": [
         "FastAPI",
         "Python",
@@ -300,5 +300,194 @@
       "image": "uploads/viajar-mvqwahuf.webp",
       "imageAlt": "Playa de Salou"
     }
-  ]
+  ],
+  "en": {
+    "settings": {
+      "title": "Alberto Arcones Muñoz | Software Implementation Specialist",
+      "description": "Software implementation specialist near Toledo and Madrid, Spain. Hands-on experience at Inditex: rollouts, technical support, incident resolution and SQL.",
+      "keywords": [
+        "software implementation specialist",
+        "technical support",
+        "SQL",
+        "PL/SQL",
+        "IBM DB2",
+        "warehouse management systems",
+        "Toledo",
+        "Madrid",
+        "Alberto Arcones Muñoz"
+      ],
+      "ogImage": "img/og-en-mvkwqkvc.jpg"
+    },
+    "profile": {
+      "role": "Software Implementation Specialist",
+      "summary": "Software implementation specialist with over a year at the Lefties (Inditex) distribution centre, working for T-Systems. I roll out warehouse applications, trace their errors through logs and databases, and see every incident through from start to finish.",
+      "location": "Borox, Toledo, Spain",
+      "photoAlt": "Portrait of Alberto Arcones Muñoz",
+      "availabilityText": "Available to start immediately, full-time",
+      "contactText": "Looking for someone for software implementation, technical support or development? Drop me a line and let's talk.",
+      "skills": [
+        "Software implementation and configuration",
+        "Technical support",
+        "Error analysis and troubleshooting",
+        "SQL and PL/SQL",
+        "IBM DB2",
+        "PostgreSQL",
+        "Python",
+        "Power BI",
+        "Retool",
+        "Grafana and Loki",
+        "Docker",
+        "Git and GitHub",
+        "JavaScript",
+        "Java",
+        "Linux",
+        "Jira and Remedy",
+        "Customer service"
+      ],
+      "languages": [
+        {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B2"
+        }
+      ]
+    },
+    "education": {
+      "dam-azarquiel": {
+        "title": "Higher Technical Diploma in Cross-Platform Application Development",
+        "description": "Java programming, databases with MySQL and PL/SQL, web development with HTML5, CSS3, JavaScript and Bootstrap, version control with Git, and Windows and Linux system administration."
+      },
+      "talento-digital-ciber": {
+        "title": "Talento Digital Programme: Cybersecurity and CyberOps Associate",
+        "school": "EOI and Cisco",
+        "description": "IT security, social engineering, threats and attacks, vulnerabilities and defence mechanisms, wireless network security and cybersecurity controls in the workplace.",
+        "tags": [
+          "Cybersecurity",
+          "CyberOps",
+          "Networking"
+        ]
+      },
+      "powerbi-openwebinars": {
+        "title": "Power BI Specialist",
+        "description": "Analysing and interpreting data, and making data-driven decisions with Power BI.",
+        "tags": [
+          "Power BI",
+          "Data analysis"
+        ]
+      }
+    },
+    "experience": {
+      "tsystems-implantacion": {
+        "role": "Software Implementation Specialist",
+        "client": "Inditex project, Lefties distribution centre",
+        "highlights": [
+          "Rolled out, configured and maintained the warehouse management applications at the distribution centre.",
+          "Detected and diagnosed module errors by analysing logs, traces and communication between systems.",
+          "Supported users and resolved incidents, tracking tickets in Jira and Remedy.",
+          "Wrote SQL and PL/SQL queries on IBM DB2 to check and analyse operational data.",
+          "Built internal tools to improve processes, such as operational dashboards and automated workflows in Retool.",
+          "Worked with development teams and documented incidents with corrective and preventive actions."
+        ],
+        "tags": [
+          "Implementation",
+          "Technical support",
+          "SQL",
+          "PL/SQL",
+          "IBM DB2",
+          "Grafana",
+          "Jira",
+          "Remedy",
+          "Retool"
+        ]
+      },
+      "kanzan-practicas": {
+        "role": "Cross-Platform Application Developer (internship)",
+        "location": "Remote",
+        "highlights": [
+          "Developed a bus tracking system with the OutSystems low-code platform."
+        ]
+      }
+    },
+    "projects": {
+      "diario-de-estudio-con-agentes-de-ia-v2k4": {
+        "title": "Study journal built with AI agents",
+        "context": "MoureDev's “El Nuevo Programador” course",
+        "summary": "Web app to log study sessions and keep track of your consistency: streak, stats, a 52-week heatmap, time split by topic and a weekly goal.",
+        "details": "Built with Spec-Driven Development and a multi-agent setup in OpenCode (planner, implementer, reviewer and coordinator): every feature starts from a spec, a plan and verifiable tasks. The logic is kept separate from the DOM and covered by 37 tests with node:test.",
+        "imageAlt": "Study journal dashboard showing the day streak, a yearly heatmap, time by topic and weekly goal progress",
+        "tags": [
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+          "node:test",
+          "OpenCode",
+          "AI agents",
+          "Spec-Driven Development"
+        ]
+      },
+      "ecommerce-microservices": {
+        "title": "Microservices e-commerce",
+        "context": "Personal project",
+        "summary": "Online shop split into independent user, catalogue and order services, each with its own database, behind an Nginx gateway.",
+        "details": "JWT authentication, Redis caching for the catalogue and the whole environment spun up with docker-compose. Continuous integration with GitHub Actions and a branch and pull request workflow.",
+        "imageAlt": "Three screens of the online shop: catalogue with category filters, product page with a gallery and the basket with the order summary"
+      },
+      "bus-tracking": {
+        "title": "Bus tracking",
+        "context": "Internship at Kanzan Tech",
+        "summary": "Cross-platform app for tracking a fleet's buses, built during the internship of my Cross-Platform Application Development diploma.",
+        "details": "Built with the OutSystems low-code platform.",
+        "imageAlt": "Bus tracking app on three phones: trip list with search, a map with the bus's live position and the driver's screen for sharing their location",
+        "tags": [
+          "OutSystems",
+          "Low-code",
+          "Cross-platform"
+        ]
+      },
+      "logql-builder": {
+        "title": "LogQL query builder",
+        "context": "Internal tool",
+        "summary": "Desktop app for building Grafana Loki queries without memorising the syntax: you describe what you're looking for in plain language and the app writes the query.",
+        "details": "Detects modules, log levels, time ranges and identifiers without using AI. Favourites, history, real-time validation, dark mode and keyboard shortcuts. Packaged as an executable with Electron."
+      },
+      "silo-3d": {
+        "title": "3D map of a pallet silo",
+        "context": "Internal tool",
+        "summary": "3D view of an eight-aisle automated silo with double-deep racking, where each location is coloured according to whether it's occupied, free, disabled or in error.",
+        "details": "A workflow syncs a full snapshot of the silo from IBM DB2 to a PostgreSQL database, and the map renders it so errors can be spotted at a glance.",
+        "tags": [
+          "Retool",
+          "IBM DB2",
+          "PostgreSQL",
+          "SQL",
+          "3D visualisation"
+        ]
+      }
+    },
+    "hobbies": {
+      "musica-xs6t": {
+        "title": "Music",
+        "text": "I play the trombone in the Borox town band. Rehearsals, concerts, processions and village festivals: I've been sharing a music stand with my neighbours for years.",
+        "imageAlt": "Alberto playing the trombone with the Borox town band during a concert"
+      },
+      "tiempo-con-amigos-cde8": {
+        "title": "Time with friends",
+        "text": "What I enjoy most is spending time with my friends: meet-ups, dinners, village festivals or just an ordinary afternoon. It's what recharges my batteries.",
+        "imageAlt": "Alberto with his friends on a countryside hike"
+      },
+      "cocina-3ujq": {
+        "title": "Cooking",
+        "text": "I enjoy cooking as much as eating well. I spend a lot of time in the kitchen trying out new recipes, and I've always got a place lined up to go and eat.",
+        "imageAlt": "Black rice paella"
+      },
+      "viajar-asfd": {
+        "title": "Travel",
+        "text": "I love travelling and discovering new places, from weekend breaks to trips to the coast. I always come back wanting to plan the next one.",
+        "imageAlt": "Salou beach"
+      }
+    }
+  }
 }

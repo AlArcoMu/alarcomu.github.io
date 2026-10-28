@@ -171,7 +171,7 @@ const referencedFiles = () => {
   return [...S.files.entries()].filter(([, f]) => json.includes(`"${f.parent || f.sitePath}"`));
 };
 const isDirty = () => !!S.data && (JSON.stringify(S.data) !== S.originalNorm || referencedFiles().length > 0);
-const LABELS = { settings: "Ajustes y SEO", profile: "Perfil", experience: "Experiencia", education: "Estudios", projects: "Proyectos", hobbies: "Aficiones" };
+const LABELS = { settings: "Ajustes y SEO", profile: "Perfil", experience: "Experiencia", education: "Estudios", projects: "Proyectos", hobbies: "Aficiones", en: "Inglés" };
 function changedSections() {
   const orig = JSON.parse(S.original);
   return Object.keys(LABELS).filter((k) => JSON.stringify(S.data[k]) !== JSON.stringify(orig[k]));
@@ -302,6 +302,7 @@ function field(def, obj, onChange = changed) {
   }
   const wrap = h("div", { class: "field" }, h("label", { for: id }, label), control);
   if (def.seo) wrap.append(counterFor(control, def.seo));
+  if (def.ref) wrap.append(h("p", { class: "ref", lang: "es" }, h("span", { class: "ref-tag", text: "ES" }), def.ref));
   if (hint) wrap.append(hint);
   return wrap;
 }
@@ -352,19 +353,23 @@ function imageField(def, obj, set, label, hint) {
 function pdfField(def, obj, set, label, hint) {
   const name = h("span", { class: "muted" });
   const input = h("input", { type: "file", accept: "application/pdf", hidden: true });
-  const paint = () => (name.textContent = obj[def.key] ? obj[def.key].split("/").pop() : "Sin archivo");
+  const remove = h("button", { type: "button", class: "btn btn-danger btn-sm", text: "Quitar", onclick: () => { set(""); paint(); } });
+  const paint = () => {
+    name.textContent = obj[def.key] ? obj[def.key].split("/").pop() : "Sin archivo";
+    remove.hidden = !def.removable || !obj[def.key];
+  };
   input.addEventListener("change", () => {
     const file = input.files?.[0];
     if (!file) return;
     if (file.type !== "application/pdf") return toast("El CV tiene que ser un PDF.");
     if (file.size > 8 * 1024 * 1024) return toast("El PDF pesa más de 8 MB. Expórtalo con menos calidad.");
-    set(addPending(file, "cv", "Alberto-Arcones-Munoz-CV-" + Date.now().toString(36)));
+    set(addPending(file, "cv", `${def.fileBase || "Alberto-Arcones-Munoz-CV"}-${Date.now().toString(36)}`));
     input.value = "";
     paint();
   });
   paint();
   return h("div", { class: "field" }, label,
-    h("div", { class: "image-field" }, name, h("button", { type: "button", class: "btn btn-ghost btn-sm", text: "Subir PDF", onclick: () => input.click() }), input),
+    h("div", { class: "image-field" }, name, h("button", { type: "button", class: "btn btn-ghost btn-sm", text: "Subir PDF", onclick: () => input.click() }), remove, input),
     hint);
 }
 
@@ -492,6 +497,105 @@ const SETTINGS_GROUPS = [
   ] },
 ];
 
+const EN_SETTINGS = [
+  { key: "title", label: "Título de la página", seo: [30, 60] },
+  { key: "description", label: "Meta descripción", type: "textarea", seo: [110, 160] },
+  { key: "keywords", label: "Palabras clave", type: "lines", rows: 5, hint: "Una por línea." },
+  { key: "ogImage", label: "Imagen para redes sociales", type: "image", kind: "og", hint: "1200 × 630, JPG. Si no pones ninguna, se usa la de la versión en español." },
+  { key: "projectsNote", label: "Nota junto al título de Proyectos" },
+  { key: "hobbiesTitle", label: "Título de la sección de aficiones", placeholder: "Outside work", always: true },
+  { key: "hobbiesIntro", label: "Introducción de la sección de aficiones", type: "textarea", rows: 2 },
+];
+const EN_PROFILE = [
+  { key: "role", label: "Puesto", placeholder: "Software Implementation Specialist" },
+  { key: "summary", label: "Presentación", type: "textarea", rows: 4, seo: [120, 280] },
+  { key: "location", label: "Ubicación", placeholder: "Borox, Toledo, Spain" },
+  { key: "photoAlt", label: "Texto alternativo de la foto" },
+  { key: "availabilityText", label: "Texto de disponibilidad" },
+  { key: "contactText", label: "Texto de la sección de contacto", type: "textarea", rows: 2 },
+  { key: "skills", label: "Habilidades", type: "lines", rows: 6, hint: "Una por línea." },
+  { key: "languages", label: "Idiomas", type: "langs", hint: "Una por línea, con el nivel tras una barra: English | B2" },
+  { key: "cv", label: "CV en inglés (PDF)", type: "pdf", fileBase: "Alberto-Arcones-Munoz-CV-EN", removable: true, always: true, hint: "Opcional. Si no subes uno, la versión en inglés enlaza el CV en español." },
+];
+const EN_LISTS = {
+  projects: { name: (x) => x.title, fields: [
+    { key: "title", label: "Título" },
+    { key: "context", label: "Contexto" },
+    { key: "summary", label: "Resumen", type: "textarea", seo: [80, 200] },
+    { key: "details", label: "Detalles", type: "textarea" },
+    { key: "imageAlt", label: "Texto alternativo de la imagen" },
+    { key: "tags", label: "Tecnologías", type: "tags", optional: true, hint: "Separadas por comas. Déjalo vacío si se dicen igual en inglés." },
+  ] },
+  experience: { name: (x) => x.role, fields: [
+    { key: "role", label: "Puesto" },
+    { key: "client", label: "Cliente o proyecto" },
+    { key: "location", label: "Ubicación", optional: true, hint: "Solo si cambia en inglés, como «En remoto»." },
+    { key: "highlights", label: "Logros y funciones", type: "lines", rows: 6, hint: "Una por línea, en el mismo orden." },
+    { key: "tags", label: "Herramientas", type: "tags", optional: true, hint: "Separadas por comas. Déjalo vacío si se dicen igual en inglés." },
+  ] },
+  education: { name: (x) => x.title, fields: [
+    { key: "title", label: "Título" },
+    { key: "school", label: "Centro", optional: true, hint: "Solo si el nombre cambia en inglés." },
+    { key: "location", label: "Ubicación", optional: true },
+    { key: "description", label: "Descripción", type: "textarea" },
+    { key: "tags", label: "Materias", type: "tags", optional: true, hint: "Separadas por comas. Déjalo vacío si se dicen igual en inglés." },
+  ] },
+  hobbies: { name: (x) => x.title, fields: [
+    { key: "title", label: "Título" },
+    { key: "text", label: "Texto", type: "textarea", rows: 3 },
+    { key: "imageAlt", label: "Texto alternativo de la foto" },
+  ] },
+};
+const filled = (v) => (Array.isArray(v) ? v.length > 0 : v != null && String(v).trim() !== "");
+const refText = (v, type) => {
+  if (!filled(v)) return "";
+  if (type === "langs") return v.map((l) => (l.level ? `${l.name} | ${l.level}` : l.name)).join(" · ");
+  if (Array.isArray(v)) return v.join(type === "tags" ? ", " : "\n");
+  return String(v).trim();
+};
+
+function enCard(heading, defs, source, path, level = "h2") {
+  const tmp = clone(path.reduce((o, k) => o?.[k], S.data.en) || {});
+  const visible = defs.filter((d) => d.always || filled(source[d.key]));
+  const todo = visible.filter((d) => !d.optional && !d.always && d.type !== "image");
+  const chip = h("span", { class: "chip" });
+  const refresh = () => {
+    const done = todo.filter((d) => filled(tmp[d.key])).length;
+    chip.textContent = !todo.length || done === todo.length ? "Traducido" : done ? `${done} de ${todo.length}` : "Sin traducir";
+    chip.className = "chip " + (!todo.length || done === todo.length ? "ok" : done ? "warn" : "bad");
+  };
+  const commit = () => {
+    const clean = Object.fromEntries(Object.entries(tmp).filter(([, v]) => filled(v)));
+    const en = S.data.en || {};
+    if (path.length === 1) {
+      if (Object.keys(clean).length) en[path[0]] = clean; else delete en[path[0]];
+    } else {
+      const group = en[path[0]] || {};
+      if (Object.keys(clean).length) group[path[1]] = clean; else delete group[path[1]];
+      if (Object.keys(group).length) en[path[0]] = group; else delete en[path[0]];
+    }
+    if (Object.keys(en).length) S.data.en = en; else delete S.data.en;
+    refresh();
+    changed();
+  };
+  refresh();
+  const defsWithRef = visible.map((d) => ({ ...d, ref: d.type === "image" || d.type === "pdf" ? "" : refText(source[d.key], d.type) }));
+  return h("section", { class: "card" }, h("div", { class: "card-head" }, h(level, { text: heading }), chip), ...fieldsBlock(defsWithRef, tmp, commit));
+}
+
+function renderEnglish(panel) {
+  panel.append(h("div", { class: "panel-head" }, h("div", {}, h("h1", { text: "Inglés" }),
+    h("p", { class: "muted", text: "Textos de la versión en inglés (/en/). Debajo de cada campo tienes el texto en español. Lo que dejes vacío aparece en español." }))));
+  panel.append(enCard("Ajustes y SEO", EN_SETTINGS, S.data.settings, ["settings"]));
+  panel.append(enCard("Perfil", EN_PROFILE, S.data.profile, ["profile"]));
+  for (const [key, cfg] of Object.entries(EN_LISTS)) {
+    const arr = S.data[key] || [];
+    if (!arr.length) continue;
+    panel.append(h("h2", { class: "group-title", text: LABELS[key] }));
+    arr.forEach((it) => panel.append(enCard(cfg.name(it) || "(sin título)", cfg.fields, it, [key, it.id], "h3")));
+  }
+}
+
 function fieldsBlock(defs, obj, onChange) {
   return defs.map((d) => (Array.isArray(d) ? h("div", { class: "grid-2" }, d.map((x) => field(x, obj, onChange))) : field(d, obj, onChange)));
 }
@@ -501,6 +605,7 @@ function render() {
   const panel = $("#panel");
   panel.replaceChildren();
   if (SCHEMAS[S.tab]) renderList(panel, S.tab);
+  else if (S.tab === "en") renderEnglish(panel);
   else if (S.tab === "profile") renderGroups(panel, "Perfil", "Tus datos personales y lo que aparece en la portada.", PROFILE_GROUPS, S.data.profile);
   else renderSettings(panel);
   updateStatus();
@@ -547,7 +652,11 @@ function move(key, i, d) {
 function removeItem(key, i) {
   const r = SCHEMAS[key].row(S.data[key][i]);
   if (!confirm(`¿Eliminar «${r.title}»? Podrás descartarlo antes de publicar.`)) return;
-  S.data[key].splice(i, 1);
+  const [gone] = S.data[key].splice(i, 1);
+  if (S.data.en?.[key]?.[gone.id]) {
+    delete S.data.en[key][gone.id];
+    if (!Object.keys(S.data.en[key]).length) delete S.data.en[key];
+  }
   changed();
   render();
   toast(`«${r.title}» eliminado. Publica para aplicarlo en la web.`);

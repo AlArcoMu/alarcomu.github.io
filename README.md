@@ -28,6 +28,10 @@ src/                   estilos y JS de la web
 public/                estáticos y panel /admin
 ```
 
+## Idiomas
+
+La web se genera en español (`/`) y en inglés (`/en/`), con `hreflang` entre ambas versiones. Los textos en inglés están en la clave `en` de `content/content.json`, agrupados por id, y se editan desde la pestaña Inglés del panel. Lo que no esté traducido sale en español.
+
 ## Despliegue
 
 Cada push a `main` lanza el workflow `.github/workflows/deploy.yml`, que genera `dist/` y lo publica en Pages.
