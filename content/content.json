@@ -3,11 +3,13 @@
     "siteUrl": "https://alarcomu.github.io",
     "lang": "es",
     "locale": "es_ES",
-    "title": "Alberto Arcones Muñoz | Técnico de Implantación de Software",
-    "description": "Alberto Arcones Muñoz, técnico de implantación de software en Toledo y Madrid. Experiencia en Inditex: implantación, soporte técnico, incidencias y SQL.",
+    "title": "Alberto Arcones Muñoz | Técnico de Soporte e Implantación",
+    "description": "Alberto Arcones Muñoz, técnico de soporte e implantación de software en Toledo y Madrid. Experiencia en Inditex: soporte, incidencias, implantación y SQL.",
     "keywords": [
-      "técnico de implantación de software",
+      "técnico de soporte",
       "soporte técnico",
+      "técnico de implantación de software",
+      "resolución de incidencias",
       "SQL",
       "PL/SQL",
       "IBM DB2",
@@ -21,7 +23,7 @@
       "experiencia",
       "proyectos"
     ],
-    "ogImage": "img/og-mvkwqkvc.jpg",
+    "ogImage": "img/og-mw2soporte.jpg",
     "customDomain": "",
     "projectsNote": ""
   },
@@ -32,8 +34,8 @@
     "nameLine1": "Alberto Arcones",
     "nameLine2": "Muñoz",
     "handle": "alarcomu",
-    "role": "Técnico de Implantación de Software",
-    "summary": "Técnico de implantación de software con más de un año en el centro logístico de Lefties (Inditex) para T-Systems. Pongo en marcha aplicaciones de almacén, rastreo sus errores en logs y bases de datos y resuelvo cada incidencia de principio a fin.",
+    "role": "Técnico de Soporte e Implantación de Software",
+    "summary": "Técnico de soporte e implantación con casi año y medio en el centro logístico de Lefties (Inditex) para T-Systems. Ponía en marcha aplicaciones de almacén, rastreaba sus errores en logs y bases de datos y resolvía cada incidencia de principio a fin. Busco mi siguiente puesto en soporte técnico o implantación.",
     "location": "Borox, Toledo",
     "region": "Castilla-La Mancha",
     "country": "ES",
@@ -304,11 +306,13 @@
   ],
   "en": {
     "settings": {
-      "title": "Alberto Arcones Muñoz | Software Implementation Specialist",
-      "description": "Software implementation specialist near Toledo and Madrid, Spain. Hands-on experience at Inditex: rollouts, technical support, incident resolution and SQL.",
+      "title": "Alberto Arcones Muñoz | IT Support and Implementation",
+      "description": "IT support and implementation specialist near Toledo and Madrid, Spain. Experience at Inditex: technical support, incident resolution, rollouts and SQL.",
       "keywords": [
-        "software implementation specialist",
+        "IT support",
         "technical support",
+        "software implementation",
+        "incident resolution",
         "SQL",
         "PL/SQL",
         "IBM DB2",
@@ -317,11 +321,11 @@
         "Madrid",
         "Alberto Arcones Muñoz"
       ],
-      "ogImage": "img/og-en-mvkwqkvc.jpg"
+      "ogImage": "img/og-en-mw2soporte.jpg"
     },
     "profile": {
-      "role": "Software Implementation Specialist",
-      "summary": "Software implementation specialist with over a year at the Lefties (Inditex) distribution centre, working for T-Systems. I roll out warehouse applications, trace their errors through logs and databases, and see every incident through from start to finish.",
+      "role": "IT Support and Software Implementation Specialist",
+      "summary": "Support and implementation technician with almost a year and a half at the Lefties (Inditex) distribution centre, working for T-Systems. I rolled out warehouse applications, traced their errors through logs and databases, and saw every incident through from start to finish. I'm now looking for my next role in technical support or software implementation.",
       "location": "Borox, Toledo, Spain",
       "photoAlt": "Portrait of Alberto Arcones Muñoz",
       "availabilityText": "Available to start immediately, full-time",
