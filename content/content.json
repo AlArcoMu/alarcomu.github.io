@@ -176,6 +176,27 @@
   ],
   "projects": [
     {
+      "id": "diagnostico-de-equipos-d7q2",
+      "title": "Diagnóstico de equipos",
+      "year": "2026",
+      "context": "Proyecto personal",
+      "summary": "Herramienta de escritorio para Windows que revisa un equipo en segundos y genera un informe listo para adjuntar al ticket, con los problemas detectados ordenados por gravedad.",
+      "details": "Recoge con PowerShell el estado de discos, memoria, red, impresoras, servicios, visor de eventos, antivirus y actualizaciones, y comprueba la conexión. El informe permite copiar un resumen para el ticket o guardarlo en PDF. Incluye tests y un workflow de GitHub Actions que compila el .exe y lo prueba en un Windows real.",
+      "image": "uploads/diagnostico-de-equipos-mw4k2d9p.webp",
+      "imageAlt": "Ventana de la herramienta de diagnóstico junto al informe generado, con avisos de disco casi lleno, reinicio pendiente e impresora sin conexión",
+      "tags": [
+        "Python",
+        "PowerShell",
+        "tkinter",
+        "HTML",
+        "PyInstaller",
+        "GitHub Actions"
+      ],
+      "repo": "https://github.com/alarcomu/diagnostico-equipos",
+      "demo": "",
+      "download": "https://github.com/alarcomu/diagnostico-equipos/releases"
+    },
+    {
       "id": "diario-de-estudio-con-agentes-de-ia-v2k4",
       "title": "Diario de Estudio con agentes de IA",
       "year": "2026",
@@ -465,6 +486,13 @@
         "summary": "Desktop app that analyses Fleet Manager logs exported from Grafana Loki: it separates pallets that reach their destination from rejected ones, extracts the reasons for each rejection and works out rejection rates by table and by day.",
         "details": "Built in Python with tkinter and packaged as a portable .exe. It reads several JSON files at once and produces an Excel and PDF report with a summary by day and table, a per-pallet breakdown and how often each reason comes up. Includes a help screen with the LogQL query for exporting the data.",
         "imageAlt": "Rejection analyser with sample data: the app window, a PDF report broken down by table and pallet, and an Excel sheet with the summary"
+      },
+      "diagnostico-de-equipos-d7q2": {
+        "title": "PC diagnostics tool",
+        "context": "Personal project",
+        "summary": "Windows desktop tool that checks a computer in seconds and produces a report ready to attach to a support ticket, with the issues found sorted by severity.",
+        "details": "Uses PowerShell to collect the state of disks, memory, network, printers, services, the event log, antivirus and updates, and runs connectivity checks. The report lets you copy a summary into the ticket or save it as a PDF. Includes tests and a GitHub Actions workflow that builds the .exe and runs it on a real Windows machine.",
+        "imageAlt": "The diagnostics tool window next to the generated report, showing warnings for an almost full disk, a pending restart and an offline printer"
       }
     },
     "hobbies": {

@@ -406,8 +406,9 @@ const SCHEMAS = {
       { key: "imageAlt", label: "Texto alternativo de la imagen", hint: "Describe la imagen para lectores de pantalla y Google. Obligatorio si hay imagen." },
       { key: "tags", label: "Tecnologías", type: "tags", hint: "Separadas por comas." },
       [{ key: "repo", label: "Enlace al código", type: "url", placeholder: "https://github.com/alarcomu/…" }, { key: "demo", label: "Enlace a la demo", type: "url", placeholder: "https://…" }],
+      { key: "download", label: "Enlace de descarga", type: "url", placeholder: "https://github.com/alarcomu/…/releases", hint: "Opcional. Muestra un botón Descargar, por ejemplo para un .exe publicado en Releases." },
     ],
-    blank: () => ({ id: "", title: "", year: String(new Date().getFullYear()), context: "Proyecto personal", summary: "", details: "", image: "", imageAlt: "", tags: [], repo: "", demo: "" }),
+    blank: () => ({ id: "", title: "", year: String(new Date().getFullYear()), context: "Proyecto personal", summary: "", details: "", image: "", imageAlt: "", tags: [], repo: "", demo: "", download: "" }),
     row: (p) => ({ title: p.title, sub: [p.context, p.year, (p.tags || []).slice(0, 4).join(", ")].filter(Boolean).join(" · "), thumb: p.image ? imgSrc(p.image) : initials(p.title) }),
   },
   experience: {

@@ -94,7 +94,7 @@ const LOCALES = {
     nav: { estudios: "Estudios", experiencia: "Experiencia", proyectos: "Proyectos", aficiones: "Aficiones", contacto: "Contacto" },
     titles: { estudios: "Estudios", experiencia: "Experiencia laboral", proyectos: "Proyectos", aficiones: "Fuera del trabajo", contacto: "Contacto" },
     skills: "Habilidades", languages: "Idiomas", subjects: "Materias", tools: "Herramientas", tech: "Tecnologías",
-    demo: "Ver demo", code: "Ver código", newTab: (t) => ` de ${t} (se abre en otra pestaña)`,
+    demo: "Ver demo", code: "Ver código", download: "Descargar", newTab: (t) => ` de ${t} (se abre en otra pestaña)`,
     navMain: "Principal", navSections: "Secciones", home: (h) => `${h}, inicio`, cvPdf: " en PDF", openMenu: "Abrir menú",
     viewProjects: "Ver proyectos", writeMe: "Escríbeme", downloadCv: "Descargar CV", skip: "Saltar al contenido",
     contactText: "¿Buscas a alguien para implantación, soporte técnico o desarrollo? Escríbeme y hablamos.",
@@ -137,7 +137,7 @@ const LOCALES = {
     nav: { estudios: "Education", experiencia: "Experience", proyectos: "Projects", aficiones: "Hobbies", contacto: "Contact" },
     titles: { estudios: "Education", experiencia: "Work experience", proyectos: "Projects", aficiones: "Outside work", contacto: "Contact" },
     skills: "Skills", languages: "Languages", subjects: "Subjects", tools: "Tools", tech: "Technologies",
-    demo: "Live demo", code: "Source code", newTab: (t) => ` for ${t} (opens in a new tab)`,
+    demo: "Live demo", code: "Source code", download: "Download", newTab: (t) => ` for ${t} (opens in a new tab)`,
     navMain: "Main", navSections: "Sections", home: (h) => `${h}, home`, cvPdf: " (PDF)", openMenu: "Open menu",
     viewProjects: "See projects", writeMe: "Get in touch", downloadCv: "Download CV", skip: "Skip to content",
     contactText: "Looking for someone for software implementation, technical support or development? Drop me a line and let's talk.",
@@ -236,6 +236,7 @@ const render = (lang) => {
   const linkPills = (p, variant = "") => {
     const items = [
       p.demo ? `<a class="btn ${variant === "featured" ? "btn-dark" : "btn-primary"} btn-sm" ${ext(p.demo)}>${T.demo}${I.out}<span class="visually-hidden">${esc(T.newTab(p.title))}</span></a>` : "",
+      p.download ? `<a class="btn ${p.demo ? (variant === "featured" ? "btn-outline-dark" : "btn-ghost") : variant === "featured" ? "btn-dark" : "btn-primary"} btn-sm" ${ext(p.download)}>${T.download}${I.download}<span class="visually-hidden">${esc(T.newTab(p.title))}</span></a>` : "",
       p.repo ? `<a class="btn ${variant === "featured" ? "btn-outline-dark" : "btn-ghost"} btn-sm" ${ext(p.repo)}>${T.code}${I.out}<span class="visually-hidden">${esc(T.newTab(p.title))}</span></a>` : "",
     ].join("");
     return items ? `<div class="actions">${items}</div>` : "";
